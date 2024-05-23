@@ -1,0 +1,58 @@
+version: '3'
+
+x-site-vitrine: &configuration-base
+  build:
+    context: .
+  env_file:
+    - ./.env.site
+  volumes:
+    - .:/usr/src/app
+    - node_modules:/usr/src/app/node_modules/
+
+services:
+  test:
+    <<: *configuration-base
+    command: "npm run test:watch"
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    depends_on:
+      - nginx
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  nginx:
+    image: nginx:mainline-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/certbot/conf:/etc/letsencrypt
+      - ./nginx/certbot/www:/var/www/certbot
+    depends_on:
+      - web
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  web:
+    <<: *configuration-base
+    command: "npx nodemon server.js"
+    ports:
+      - "${PORT_SITE_VITRINE}:3000"
+    depends_on:
+     - mock_fcplus
+
+  mock_fcplus:
+    <<: *configuration-base
+    command: "npx nodemon mockFCPlus.js"
+    ports:
+      - "${PORT_MOCK_FCPLUS}:4000"
+    environment:
+      - URL_BASE_MOCK_FCPLUS=${URL_BASE}:${PORT_MOCK_FCPLUS}
+
+volumes:
+  node_modules:
