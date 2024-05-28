@@ -22,6 +22,8 @@ const creeServeur = (config) => {
   app.set('view engine', 'mustache');
   app.engine('mustache', mustacheExpress());
 
+  app.use('/statique', express.static('public'));
+
   app.use(cookieSession({
     maxAge: 15 * 60 * 1000,
     name: 'session',
