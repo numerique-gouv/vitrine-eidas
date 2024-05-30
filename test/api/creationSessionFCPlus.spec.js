@@ -38,7 +38,7 @@ describe('Le requêteur de création de session FC+', () => {
 
     reponse.redirect = (url) => {
       try {
-        expect(url).toContain('scope=profile%20openid');
+        expect(url).toContain('scope=profile%20openid%20birthcountry%20birthplace');
         expect(url).toContain('acr_values=eidas2');
         expect(url).toContain('claims={%22id_token%22:{%22amr%22:{%22essential%22:true}}}');
         expect(url).toContain('prompt=login%20consent');
