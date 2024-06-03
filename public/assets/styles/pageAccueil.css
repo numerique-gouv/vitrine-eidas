@@ -1,13 +1,13 @@
 .bouton-franceconnect {
-    width: 209px;
-    height: 56px;
-    background-image: url("/statique/assets/images/franceconnect-btn-principal.svg");
-    border: none;
-    cursor: pointer;
     display: block;
-    margin: 12px;
+    cursor: pointer;
+
+    width: 256px;
+    height: 60px;
+    margin-bottom: 12px;
+    background-image: url("/statique/assets/images/bouton_france_connect_plus.svg");
 }
 
 .bouton-franceconnect:hover {
-    background-image: url("/statique/assets/images/franceconnect-btn-principal-hover.svg");
+    background-image: url("/statique/assets/images/bouton_survol_france_connect_plus.svg");
 }
