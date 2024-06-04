@@ -6,16 +6,17 @@ describe('Le requêteur de création de session FC+', () => {
   const adaptateurFranceConnectPlus = {};
   const config = { adaptateurChiffrement, adaptateurEnvironnement, adaptateurFranceConnectPlus };
   const reponse = {};
-
   const requete = {};
 
   beforeEach(() => {
     adaptateurChiffrement.cleHachage = () => '';
     adaptateurChiffrement.genereJeton = () => Promise.resolve();
+    adaptateurEnvironnement.avecMock = () => false;
     adaptateurEnvironnement.fournisseurIdentiteSuggere = () => '';
     adaptateurEnvironnement.identifiantClient = () => '';
     adaptateurEnvironnement.urlRedirectionConnexion = () => '';
     adaptateurFranceConnectPlus.urlCreationSession = () => Promise.resolve('');
+    requete.query = {};
     requete.session = {};
     reponse.send = () => Promise.resolve();
   });
@@ -146,6 +147,25 @@ describe('Le requêteur de création de session FC+', () => {
       reponse.send = (url) => {
         try {
           expect(url).toContain('idp_hint=eidas-bridge');
+          return Promise.resolve();
+        } catch (e) {
+          return Promise.reject(e);
+        }
+      };
+
+      return creationSessionFCPlus(config, requete, reponse);
+    });
+  });
+
+  describe('Si utilisation serveur mock FC+', () => {
+    it('renseigne le paramètre `contexte_mock` avec la bonne valeur', () => {
+      expect.assertions(1);
+      adaptateurEnvironnement.avecMock = () => true;
+
+      requete.query.contexteMock = 'unContexte';
+      reponse.send = (url) => {
+        try {
+          expect(url).toContain('contexte_mock=unContexte');
           return Promise.resolve();
         } catch (e) {
           return Promise.reject(e);

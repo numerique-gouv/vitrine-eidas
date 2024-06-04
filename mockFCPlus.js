@@ -75,8 +75,10 @@ app.get('/', (_requete, reponse) => {
 });
 
 app.get('/debut_session', (requete, reponse) => {
-  const etat = requete.params.state;
-  reponse.redirect(`${process.env.URL_REDIRECTION_CONNEXION}?state=${etat}&code=abcdef`);
+  const contexteMock = requete.query.contexte_mock;
+  const etat = (contexteMock === 'etatRenvoyeInvalide') ? 'oups' : requete.query.state;
+  const code = (contexteMock === 'signatureJetonInvalide') ? 'XXX' : 'abcdef';
+  reponse.redirect(`${process.env.URL_REDIRECTION_CONNEXION}?state=${etat}&code=${code}`);
 });
 
 app.get('/fin_session', (_requete, reponse) => {
