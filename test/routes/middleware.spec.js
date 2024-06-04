@@ -5,13 +5,15 @@ describe('Le middleware OOTS-France', () => {
   const adaptateurChiffrement = {};
   const adaptateurEnvironnement = {};
   const config = { adaptateurChiffrement, adaptateurEnvironnement };
+  const reponse = {};
   let requete;
 
   beforeEach(() => {
     adaptateurEnvironnement.secretJetonSession = () => '';
     adaptateurChiffrement.verifieJeton = () => Promise.resolve();
 
-    requete = { session: { jeton: '' } };
+    requete = { query: {}, session: { jeton: '' } };
+    reponse.send = () => Promise.resolve();
   });
 
   it('vérifie le jeton stocké en session', (suite) => {
@@ -56,5 +58,58 @@ describe('Le middleware OOTS-France', () => {
       suite();
     })
       .catch(suite);
+  });
+
+  describe('sur demande de vérification du tampon unique', () => {
+    it('assure que tampon communiqué identique à celui stocké en session avant de passer à la suite', (suite) => {
+      expect.assertions(1);
+
+      adaptateurChiffrement.verifieJeton = (jeton) => {
+        try {
+          expect(jeton).toBe('XXX');
+          return Promise.resolve({ etat: '12345' });
+        } catch (e) {
+          return Promise.reject(e);
+        }
+      };
+
+      requete.session.jeton = 'XXX';
+      requete.query.state = '12345';
+      const middleware = new Middleware(config);
+
+      middleware.verifieTamponUnique(requete, reponse, suite)
+        .catch(suite);
+    });
+
+    it('redirige vers page accueil depuis navigateur si tampon communiqué différent', () => {
+      reponse.send = (html) => {
+        try {
+          expect(html).toContain('<meta http-equiv="refresh" content="0; url=\'/\'">');
+          return Promise.resolve();
+        } catch (e) {
+          return Promise.reject(e);
+        }
+      };
+
+      adaptateurChiffrement.verifieJeton = () => Promise.resolve({ etat: 'oups' });
+      requete.query.state = '12345';
+      const middleware = new Middleware(config);
+
+      return middleware.verifieTamponUnique(
+        requete,
+        reponse,
+        () => Promise.reject(new Error("Tampon invalide – on n'aurait pas dû passer à la suite")),
+      );
+    });
+
+    it('supprime cookie session si tampon communiqué différent', () => {
+      adaptateurChiffrement.verifieJeton = () => Promise.resolve({ etat: 'oups' });
+      requete.query.state = '12345';
+      const middleware = new Middleware(config);
+
+      requete.session.jeton = 'XXX';
+      return middleware.verifieTamponUnique(requete, reponse)
+        .then(() => expect(requete.session).toBe(null));
+    });
   });
 });

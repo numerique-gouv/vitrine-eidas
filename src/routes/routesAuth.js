@@ -35,7 +35,7 @@ const routesAuth = (config) => {
       .send(clePubliqueDansJWKSet);
   });
 
-  routes.get('/fcplus/connexion', (requete, reponse) => {
+  routes.get('/fcplus/connexion', (...args) => middleware.verifieTamponUnique(...args), (requete, reponse) => {
     const { code, state } = requete.query;
     if (typeof state === 'undefined' || state === '') {
       reponse.status(400).json({ erreur: "Paramètre 'state' absent de la requête" });

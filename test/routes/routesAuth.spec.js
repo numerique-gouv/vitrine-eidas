@@ -38,6 +38,17 @@ describe('Le serveur des routes `/auth`', () => {
 
   describe('sur GET /auth/fcplus/connexion', () => {
     describe('lorsque les paramètres `code` et `state` sont présents', () => {
+      it('appelle le middleware pour vérifier le tampon communiqué par FC+', () => {
+        let middlewareAppele = false;
+        serveur.middleware().verifieTamponUnique = (_requete, _reponse, suite) => Promise.resolve()
+          .then(() => { middlewareAppele = true; })
+          .then(suite);
+
+        return axios.get(`http://localhost:${port}/auth/fcplus/connexion?state=unState&code=unCode`)
+          .then(() => expect(middlewareAppele).toBe(true))
+          .catch(leveErreur);
+      });
+
       it('redirige vers page accueil depuis navigateur', () => (
         axios.get(`http://localhost:${port}/auth/fcplus/connexion?state=unState&code=unCode`)
           .then((reponse) => expect(reponse.data).toContain('<meta http-equiv="refresh" content="0; url=\'/\'">'))
