@@ -1,15 +1,30 @@
+const { redirigeDepuisNavigateur } = require('./utils');
+
 class Middleware {
   constructor(config) {
     this.adaptateurChiffrement = config.adaptateurChiffrement;
-    this.adaptateurEnvironnement = config.adaptateurEnvironnement;
+    this.secret = config.adaptateurEnvironnement.secretJetonSession();
   }
 
   renseigneUtilisateurCourant(requete, _reponse, suite) {
-    const secret = this.adaptateurEnvironnement.secretJetonSession();
-    return this.adaptateurChiffrement.verifieJeton(requete.session.jeton, secret)
+    return this.adaptateurChiffrement.verifieJeton(requete.session.jeton, this.secret)
       .then((infosUtilisateur) => { requete.utilisateurCourant = infosUtilisateur; })
       .catch(() => { requete.utilisateurCourant = undefined; })
       .then(() => suite());
+  }
+
+  verifieTamponUnique(requete, reponse, suite) {
+    const valide = (tampon) => {
+      if (tampon.etat !== requete.query.state) {
+        requete.session = null;
+        throw new Error('État invalide');
+      }
+    };
+
+    return this.adaptateurChiffrement.verifieJeton(requete.session.jeton, this.secret)
+      .then(valide)
+      .then(suite)
+      .catch(() => redirigeDepuisNavigateur('/', reponse));
   }
 }
 

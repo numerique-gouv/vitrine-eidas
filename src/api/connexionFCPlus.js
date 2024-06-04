@@ -1,4 +1,4 @@
-const { redirigeDepuisNavigateur, stockeDansCookieSession } = require('./utils');
+const { redirigeDepuisNavigateur, stockeDansCookieSession } = require('../routes/utils');
 
 const connexionFCPlus = (config, code, requete, reponse) => {
   const { adaptateurChiffrement, fabriqueSessionFCPlus } = config;

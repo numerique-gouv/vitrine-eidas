@@ -18,10 +18,11 @@ module.exports = {
   }],
   plugins: ['no-only-tests'],
   rules: {
+    'class-methods-use-this': ['error', { enforceForClassFields: false }],
+    'no-only-tests/no-only-tests': 'error',
     'no-param-reassign': ['error', {
       props: true,
       ignorePropertyModificationsFor: ['requete'],
     }],
-    'no-only-tests/no-only-tests': 'error',
   },
 };

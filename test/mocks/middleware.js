@@ -11,6 +11,8 @@ class MiddlewareFantaisie {
     requete.utilisateurCourant = this.utilisateurCourant;
     suite();
   }
+
+  verifieTamponUnique = (_requete, _reponse, suite) => Promise.resolve().then(suite);
 }
 
 module.exports = MiddlewareFantaisie;
