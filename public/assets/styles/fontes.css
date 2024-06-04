@@ -1,0 +1,119 @@
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Thin.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Thin.woff) format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Thin_Italic.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Thin_Italic.woff) format('woff');
+  font-weight: 200;
+  font-style: italic;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Light.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Light.woff) format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Light_Italic.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Light_Italic.woff) format('woff');
+  font-weight: 300;
+  font-style: italic;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Regular.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Regular.woff) format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Regular_Italic.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Regular_Italic.woff) format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Medium.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Medium.woff) format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Medium_Italic.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Medium_Italic.woff) format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Bold.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Bold.woff) format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-Bold_Italic.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-Bold_Italic.woff) format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-ExtraBold.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-ExtraBold.woff) format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Marianne;
+  src:
+    url(/statique/assets/fontes/Marianne-ExtraBold_Italic.woff2) format('woff2'),
+    url(/statique/assets/fontes/Marianne-ExtraBold_Italic.woff) format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: block;
+}

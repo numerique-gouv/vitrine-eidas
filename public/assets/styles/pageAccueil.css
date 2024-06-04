@@ -1,3 +1,7 @@
+body {
+  font-family: 'Marianne';
+}
+
 .bouton-franceconnect {
     display: block;
     cursor: pointer;
