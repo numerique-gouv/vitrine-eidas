@@ -11,19 +11,22 @@ describe('Le requêteur de création de session FC+', () => {
 
   beforeEach(() => {
     adaptateurChiffrement.cleHachage = () => '';
+    adaptateurChiffrement.genereJeton = () => Promise.resolve();
     adaptateurEnvironnement.fournisseurIdentiteSuggere = () => '';
     adaptateurEnvironnement.identifiantClient = () => '';
     adaptateurEnvironnement.urlRedirectionConnexion = () => '';
     adaptateurFranceConnectPlus.urlCreationSession = () => Promise.resolve('');
+    requete.session = {};
+    reponse.send = () => Promise.resolve();
   });
 
   it('redirige vers serveur France Connect Plus', () => {
     expect.assertions(1);
     adaptateurFranceConnectPlus.urlCreationSession = () => Promise.resolve('http://example.com');
 
-    reponse.redirect = (url) => {
+    reponse.send = (url) => {
       try {
-        expect(url).toMatch(/^http:\/\/example\.com\?/);
+        expect(url).toContain('http://example.com?');
         return Promise.resolve();
       } catch (e) {
         return Promise.reject(e);
@@ -36,7 +39,7 @@ describe('Le requêteur de création de session FC+', () => {
   it('ajoute des paramètres à la requête', () => {
     expect.assertions(6);
 
-    reponse.redirect = (url) => {
+    reponse.send = (url) => {
       try {
         expect(url).toContain('scope=profile%20openid%20birthcountry%20birthplace');
         expect(url).toContain('acr_values=eidas2');
@@ -59,7 +62,7 @@ describe('Le requêteur de création de session FC+', () => {
 
     adaptateurEnvironnement.identifiantClient = () => '12345';
 
-    reponse.redirect = (url) => {
+    reponse.send = (url) => {
       try {
         expect(url).toContain('client_id=12345');
         return Promise.resolve();
@@ -76,7 +79,7 @@ describe('Le requêteur de création de session FC+', () => {
 
     adaptateurEnvironnement.urlRedirectionConnexion = () => 'http://example.com';
 
-    reponse.redirect = (url) => {
+    reponse.send = (url) => {
       try {
         expect(url).toContain('redirect_uri=http://example.com');
         return Promise.resolve();
@@ -97,7 +100,7 @@ describe('Le requêteur de création de session FC+', () => {
       return `12345-${nbClesGenerees}`;
     };
 
-    reponse.redirect = (url) => {
+    reponse.send = (url) => {
       try {
         expect(url).toContain('state=12345-1');
         expect(url).toContain('nonce=12345-2');
@@ -110,12 +113,37 @@ describe('Le requêteur de création de session FC+', () => {
     return creationSessionFCPlus(config, requete, reponse);
   });
 
+  it("génère un JWT à partir de la valeur de l'`etat` généré", () => {
+    expect.assertions(1);
+
+    adaptateurChiffrement.cleHachage = () => '12345';
+
+    adaptateurChiffrement.genereJeton = ({ etat }) => {
+      try {
+        expect(etat).toBe('12345');
+        return Promise.resolve();
+      } catch (e) {
+        return Promise.reject(e);
+      }
+    };
+
+    return creationSessionFCPlus(config, requete, reponse);
+  });
+
+  it('stocke le JWT généré dans le cookie de session', () => {
+    adaptateurChiffrement.genereJeton = () => Promise.resolve('XXX');
+
+    expect(requete.session.jeton).toBeUndefined();
+    return creationSessionFCPlus(config, requete, reponse)
+      .then(() => expect(requete.session.jeton).toBe('XXX'));
+  });
+
   describe('Si utilisation bridge eIDAS', () => {
     it('renseigne le paramètre `idp_hint` avec la valeur `eidas-bridge`', () => {
       expect.assertions(1);
       adaptateurEnvironnement.fournisseurIdentiteSuggere = () => 'eidas-bridge';
 
-      reponse.redirect = (url) => {
+      reponse.send = (url) => {
         try {
           expect(url).toContain('idp_hint=eidas-bridge');
           return Promise.resolve();

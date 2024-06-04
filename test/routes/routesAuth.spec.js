@@ -132,24 +132,11 @@ describe('Le serveur des routes `/auth`', () => {
   });
 
   describe('sur GET /auth/fcplus/creationSession', () => {
-    const verifieRedirection = (urlSource, urlDestination) => axios({
-      method: 'get',
-      url: urlSource,
-      maxRedirects: 0,
-    })
-      .catch(({ response }) => {
-        expect(response.status).toBe(302);
-        expect(response.headers.location).toMatch(new RegExp(`^${urlDestination}`));
-      })
-      .catch(leveErreur);
-
-    it("redirige vers l'URL (FC+) de création de session", () => {
-      serveur.adaptateurFranceConnectPlus().urlCreationSession = () => Promise.resolve(
-        `http://localhost:${port}/redirectionConnexion`, // page inexistante, résultera en une erreur HTTP 404
-      );
-
-      return verifieRedirection(`http://localhost:${port}/auth/fcplus/creationSession`, `http://localhost:${port}/redirectionConnexion`);
-    });
+    it("redirige vers l'URL (FC+) de création de session depuis navigateur", () => (
+      axios.get(`http://localhost:${port}/auth/fcplus/creationSession`)
+        .then((reponse) => expect(reponse.data).toMatch(/<meta http-equiv="refresh" content="0; url='.*'">/))
+        .catch(leveErreur)
+    ));
 
     it('retourne une erreur 501 si le feature-flipping est désactivé', () => {
       expect.assertions(1);
