@@ -87,14 +87,16 @@ describe('Le requêteur de création de session FC+', () => {
     return creationSessionFCPlus(config, requete, reponse);
   });
 
-  it("génère un JWT à partir de la valeur de l'`etat` généré", () => {
-    expect.assertions(1);
+  it('génère un JWT à partir des valeurs générées pour `etat` et `nonce`', () => {
+    expect.assertions(2);
 
-    adaptateurChiffrement.cleHachage = () => '12345';
+    let nbAppelsCleHachage = 0;
+    adaptateurChiffrement.cleHachage = () => { nbAppelsCleHachage += 1; return `12345-${nbAppelsCleHachage}`; };
 
-    adaptateurChiffrement.genereJeton = ({ etat }) => {
+    adaptateurChiffrement.genereJeton = ({ etat, nonce }) => {
       try {
-        expect(etat).toBe('12345');
+        expect(etat).toBe('12345-1');
+        expect(nonce).toBe('12345-2');
         return Promise.resolve();
       } catch (e) {
         return Promise.reject(e);
