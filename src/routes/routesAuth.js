@@ -1,6 +1,5 @@
 const express = require('express');
 
-const { redirigeDepuisNavigateur } = require('./utils');
 const connexionFCPlus = require('../api/connexionFCPlus');
 const deconnexionFCPlus = require('../api/deconnexionFCPlus');
 const creationSessionFCPlus = require('../api/creationSessionFCPlus');
@@ -44,7 +43,8 @@ const routesAuth = (config) => {
       reponse.status(400).json({ erreur: "Paramètre 'code' absent de la requête" });
     } else {
       const paramsRequete = new URLSearchParams(requete.query).toString();
-      redirigeDepuisNavigateur(`/auth/fcplus/connexion_apres_redirection?${paramsRequete}`, reponse);
+      const destination = `/auth/fcplus/connexion_apres_redirection?${paramsRequete}`;
+      reponse.render('redirectionNavigateur', { destination });
     }
   });
 

@@ -1,4 +1,4 @@
-const { redirigeDepuisNavigateur, stockeDansCookieSession } = require('../routes/utils');
+const { stockeDansCookieSession } = require('../routes/utils');
 
 const creationSessionFCPlus = (config, requete, reponse) => {
   const { adaptateurChiffrement, adaptateurEnvironnement, adaptateurFranceConnectPlus } = config;
@@ -17,7 +17,7 @@ const creationSessionFCPlus = (config, requete, reponse) => {
 
   return stockeDansCookieSession({ etat }, adaptateurChiffrement, requete)
     .then(() => construisURL())
-    .then((url) => redirigeDepuisNavigateur(url, reponse));
+    .then((url) => reponse.render('redirectionNavigateur', { destination: url }));
 };
 
 module.exports = creationSessionFCPlus;

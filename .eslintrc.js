@@ -22,7 +22,7 @@ module.exports = {
     'no-only-tests/no-only-tests': 'error',
     'no-param-reassign': ['error', {
       props: true,
-      ignorePropertyModificationsFor: ['requete'],
+      ignorePropertyModificationsFor: ['requete', 'reponse'],
     }],
   },
 };

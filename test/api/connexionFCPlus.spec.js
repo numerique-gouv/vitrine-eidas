@@ -14,7 +14,7 @@ describe('Le requêteur de connexion FC+', () => {
     });
     requete.session = {};
     reponse.json = () => Promise.resolve();
-    reponse.redirect = () => Promise.resolve();
+    reponse.render = () => Promise.resolve();
     reponse.status = () => reponse;
   });
 
