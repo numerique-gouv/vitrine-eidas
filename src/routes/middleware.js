@@ -1,5 +1,3 @@
-const { redirigeDepuisNavigateur } = require('./utils');
-
 class Middleware {
   constructor(config) {
     this.adaptateurChiffrement = config.adaptateurChiffrement;
@@ -24,7 +22,7 @@ class Middleware {
     return this.adaptateurChiffrement.verifieJeton(requete.session.jeton, this.secret)
       .then(valide)
       .then(suite)
-      .catch(() => redirigeDepuisNavigateur('/', reponse));
+      .catch(() => reponse.render('redirectionNavigateur', { destination: '/' }));
   }
 }
 

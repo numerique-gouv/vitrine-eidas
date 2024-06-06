@@ -13,7 +13,7 @@ describe('Le middleware OOTS-France', () => {
     adaptateurChiffrement.verifieJeton = () => Promise.resolve();
 
     requete = { query: {}, session: { jeton: '' } };
-    reponse.send = () => Promise.resolve();
+    reponse.render = () => Promise.resolve();
   });
 
   it('vérifie le jeton stocké en session', (suite) => {
@@ -82,9 +82,9 @@ describe('Le middleware OOTS-France', () => {
     });
 
     it('redirige vers page accueil depuis navigateur si tampon communiqué différent', () => {
-      reponse.send = (html) => {
+      reponse.render = (_nomPageRedirection, { destination }) => {
         try {
-          expect(html).toContain('<meta http-equiv="refresh" content="0; url=\'/\'">');
+          expect(destination).toBe('/');
           return Promise.resolve();
         } catch (e) {
           return Promise.reject(e);

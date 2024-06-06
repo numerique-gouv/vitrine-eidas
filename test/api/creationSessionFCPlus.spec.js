@@ -1,5 +1,16 @@
 const creationSessionFCPlus = require('../../src/api/creationSessionFCPlus');
 
+const prepareVerificationPresenceElement = (element, reponse) => {
+  reponse.render = (_nomPageRedirection, { destination }) => {
+    try {
+      expect(destination).toContain(element);
+      return Promise.resolve();
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  };
+};
+
 describe('Le requêteur de création de session FC+', () => {
   const adaptateurChiffrement = {};
   const adaptateurEnvironnement = {};
@@ -18,99 +29,61 @@ describe('Le requêteur de création de session FC+', () => {
     adaptateurFranceConnectPlus.urlCreationSession = () => Promise.resolve('');
     requete.query = {};
     requete.session = {};
-    reponse.send = () => Promise.resolve();
+    reponse.render = () => Promise.resolve();
   });
 
   it('redirige vers serveur France Connect Plus', () => {
     expect.assertions(1);
     adaptateurFranceConnectPlus.urlCreationSession = () => Promise.resolve('http://example.com');
 
-    reponse.send = (url) => {
-      try {
-        expect(url).toContain('http://example.com?');
-        return Promise.resolve();
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    };
-
+    prepareVerificationPresenceElement('http://example.com?', reponse);
     return creationSessionFCPlus(config, requete, reponse);
   });
 
-  it('ajoute des paramètres à la requête', () => {
-    expect.assertions(6);
-
-    reponse.send = (url) => {
-      try {
-        expect(url).toContain('scope=profile%20openid%20birthcountry%20birthplace');
-        expect(url).toContain('acr_values=eidas2');
-        expect(url).toContain('claims={%22id_token%22:{%22amr%22:{%22essential%22:true}}}');
-        expect(url).toContain('prompt=login%20consent');
-        expect(url).toContain('response_type=code');
-        expect(url).toContain('idp_hint=');
-
-        return Promise.resolve();
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    };
-
+  const verifiePresenceParametreEnDur = (param) => it(`ajoute le paramètre ${param} à la requête`, () => {
+    expect.assertions(1);
+    prepareVerificationPresenceElement(param, reponse);
     return creationSessionFCPlus(config, requete, reponse);
   });
+
+  [
+    'scope=profile%20openid%20birthcountry%20birthplace',
+    'acr_values=eidas2',
+    'claims={%22id_token%22:{%22amr%22:{%22essential%22:true}}}',
+    'prompt=login%20consent',
+    'response_type=code',
+    'idp_hint=',
+  ].forEach(verifiePresenceParametreEnDur);
 
   it("ajoute l'identifiant client FC+ en paramètre", () => {
     expect.assertions(1);
-
     adaptateurEnvironnement.identifiantClient = () => '12345';
 
-    reponse.send = (url) => {
-      try {
-        expect(url).toContain('client_id=12345');
-        return Promise.resolve();
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    };
-
+    prepareVerificationPresenceElement('client_id=12345', reponse);
     return creationSessionFCPlus(config, requete, reponse);
   });
 
   it("ajoute l'URL de redirection post-login en paramètre", () => {
     expect.assertions(1);
-
     adaptateurEnvironnement.urlRedirectionConnexion = () => 'http://example.com';
 
-    reponse.send = (url) => {
-      try {
-        expect(url).toContain('redirect_uri=http://example.com');
-        return Promise.resolve();
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    };
-
+    prepareVerificationPresenceElement('redirect_uri=http://example.com', reponse);
     return creationSessionFCPlus(config, requete, reponse);
   });
 
-  it('ajoute un état et un nonce en paramètres de la requête', () => {
-    expect.assertions(2);
-    let nbClesGenerees = 0;
+  it('ajoute un état en paramètre de la requête', () => {
+    expect.assertions(1);
+    adaptateurChiffrement.cleHachage = () => '12345';
 
-    adaptateurChiffrement.cleHachage = () => {
-      nbClesGenerees += 1;
-      return `12345-${nbClesGenerees}`;
-    };
+    prepareVerificationPresenceElement('state=12345', reponse);
+    return creationSessionFCPlus(config, requete, reponse);
+  });
 
-    reponse.send = (url) => {
-      try {
-        expect(url).toContain('state=12345-1');
-        expect(url).toContain('nonce=12345-2');
-        return Promise.resolve();
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    };
+  it('ajoute un nonce en paramètre de la requête', () => {
+    expect.assertions(1);
+    adaptateurChiffrement.cleHachage = () => '12345';
 
+    prepareVerificationPresenceElement('nonce=12345', reponse);
     return creationSessionFCPlus(config, requete, reponse);
   });
 
@@ -144,15 +117,7 @@ describe('Le requêteur de création de session FC+', () => {
       expect.assertions(1);
       adaptateurEnvironnement.fournisseurIdentiteSuggere = () => 'eidas-bridge';
 
-      reponse.send = (url) => {
-        try {
-          expect(url).toContain('idp_hint=eidas-bridge');
-          return Promise.resolve();
-        } catch (e) {
-          return Promise.reject(e);
-        }
-      };
-
+      prepareVerificationPresenceElement('idp_hint=eidas-bridge', reponse);
       return creationSessionFCPlus(config, requete, reponse);
     });
   });
@@ -163,15 +128,7 @@ describe('Le requêteur de création de session FC+', () => {
       adaptateurEnvironnement.avecMock = () => true;
 
       requete.query.contexteMock = 'unContexte';
-      reponse.send = (url) => {
-        try {
-          expect(url).toContain('contexte_mock=unContexte');
-          return Promise.resolve();
-        } catch (e) {
-          return Promise.reject(e);
-        }
-      };
-
+      prepareVerificationPresenceElement('contexte_mock=unContexte', reponse);
       return creationSessionFCPlus(config, requete, reponse);
     });
   });

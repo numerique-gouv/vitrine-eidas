@@ -1,4 +1,4 @@
-const { redirigeDepuisNavigateur, stockeDansCookieSession } = require('../routes/utils');
+const { stockeDansCookieSession } = require('../routes/utils');
 
 const connexionFCPlus = (config, code, requete, reponse) => {
   const { adaptateurChiffrement, fabriqueSessionFCPlus } = config;
@@ -8,7 +8,7 @@ const connexionFCPlus = (config, code, requete, reponse) => {
   return fabriqueSessionFCPlus.nouvelleSession(code)
     .then((session) => session.enJSON())
     .then((infos) => stockeDansCookieSession(infos, adaptateurChiffrement, requete))
-    .then(() => redirigeDepuisNavigateur('/', reponse))
+    .then(() => reponse.render('redirectionNavigateur', { destination: '/' }))
     .catch((e) => reponse.status(502).json({ erreur: `Échec authentification (${e.message})` }));
 };
 
