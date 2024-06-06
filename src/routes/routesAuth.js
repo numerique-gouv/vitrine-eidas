@@ -37,27 +37,28 @@ const routesAuth = (config) => {
   });
 
   routes.get('/fcplus/connexion', (requete, reponse) => {
-    const paramsRequete = new URLSearchParams(requete.query).toString();
-    redirigeDepuisNavigateur(`/auth/fcplus/connexion_apres_redirection?${paramsRequete}`, reponse);
+    const { code, state } = requete.query;
+    if (typeof state === 'undefined' || state === '') {
+      reponse.status(400).json({ erreur: "Paramètre 'state' absent de la requête" });
+    } else if (typeof code === 'undefined' || code === '') {
+      reponse.status(400).json({ erreur: "Paramètre 'code' absent de la requête" });
+    } else {
+      const paramsRequete = new URLSearchParams(requete.query).toString();
+      redirigeDepuisNavigateur(`/auth/fcplus/connexion_apres_redirection?${paramsRequete}`, reponse);
+    }
   });
 
   routes.get(
     '/fcplus/connexion_apres_redirection',
     (...args) => middleware.verifieTamponUnique(...args),
     (requete, reponse) => {
-      const { code, state } = requete.query;
-      if (typeof state === 'undefined' || state === '') {
-        reponse.status(400).json({ erreur: "Paramètre 'state' absent de la requête" });
-      } else if (typeof code === 'undefined' || code === '') {
-        reponse.status(400).json({ erreur: "Paramètre 'code' absent de la requête" });
-      } else {
-        connexionFCPlus(
-          { adaptateurChiffrement, fabriqueSessionFCPlus },
-          code,
-          requete,
-          reponse,
-        );
-      }
+      const { code } = requete.query;
+      connexionFCPlus(
+        { adaptateurChiffrement, fabriqueSessionFCPlus },
+        code,
+        requete,
+        reponse,
+      );
     },
   );
 
