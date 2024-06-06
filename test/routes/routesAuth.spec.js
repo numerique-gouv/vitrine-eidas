@@ -37,6 +37,18 @@ describe('Le serveur des routes `/auth`', () => {
   });
 
   describe('sur GET /auth/fcplus/connexion', () => {
+    it('redirige vers `/auth/fcplus/connexion_apres_redirection', () => axios
+      .get(`http://localhost:${port}/auth/fcplus/connexion`)
+      .then((reponse) => expect(reponse.data).toContain('<meta http-equiv="refresh" content="0; url=\'/auth/fcplus/connexion_apres_redirection'))
+      .catch(leveErreur));
+
+    it('transmets les paramètres reçus dans la requête', () => axios
+      .get(`http://localhost:${port}/auth/fcplus/connexion?state=unState&code=unCode`)
+      .then((reponse) => expect(reponse.data).toContain('?state=unState&code=unCode'))
+      .catch(leveErreur));
+  });
+
+  describe('sur GET /auth/fcplus/connexion_apres_redirection', () => {
     describe('lorsque les paramètres `code` et `state` sont présents', () => {
       it('appelle le middleware pour vérifier le tampon communiqué par FC+', () => {
         let middlewareAppele = false;
@@ -44,13 +56,13 @@ describe('Le serveur des routes `/auth`', () => {
           .then(() => { middlewareAppele = true; })
           .then(suite);
 
-        return axios.get(`http://localhost:${port}/auth/fcplus/connexion?state=unState&code=unCode`)
+        return axios.get(`http://localhost:${port}/auth/fcplus/connexion_apres_redirection?state=unState&code=unCode`)
           .then(() => expect(middlewareAppele).toBe(true))
           .catch(leveErreur);
       });
 
       it('redirige vers page accueil depuis navigateur', () => (
-        axios.get(`http://localhost:${port}/auth/fcplus/connexion?state=unState&code=unCode`)
+        axios.get(`http://localhost:${port}/auth/fcplus/connexion_apres_redirection?state=unState&code=unCode`)
           .then((reponse) => expect(reponse.data).toContain('<meta http-equiv="refresh" content="0; url=\'/\'">'))
           .catch(leveErreur)
       ));
@@ -59,7 +71,7 @@ describe('Le serveur des routes `/auth`', () => {
         serveur.adaptateurEnvironnement().avecEnvoiCookieSurHTTP = () => true;
         return axios({
           method: 'get',
-          url: `http://localhost:${port}/auth/fcplus/connexion?state=unState&code=unCode`,
+          url: `http://localhost:${port}/auth/fcplus/connexion_apres_redirection?state=unState&code=unCode`,
           maxRedirects: 0,
         })
           .catch(({ response }) => {
@@ -80,7 +92,7 @@ describe('Le serveur des routes `/auth`', () => {
           enJSON: () => Promise.reject(new Error('Oups')),
         });
 
-        return axios.get(`http://localhost:${port}/auth/fcplus/connexion?code=unCode&state=unState`)
+        return axios.get(`http://localhost:${port}/auth/fcplus/connexion_apres_redirection?code=unCode&state=unState`)
           .catch(({ response }) => {
             expect(response.status).toBe(502);
             expect(response.data).toEqual({ erreur: 'Échec authentification (Oups)' });
@@ -91,7 +103,7 @@ describe('Le serveur des routes `/auth`', () => {
     it("sert une erreur HTTP 400 (Bad Request) si le paramètre 'code' est manquant", () => {
       expect.assertions(2);
 
-      return axios.get(`http://localhost:${port}/auth/fcplus/connexion?state=unState`)
+      return axios.get(`http://localhost:${port}/auth/fcplus/connexion_apres_redirection?state=unState`)
         .catch(({ response }) => {
           expect(response.status).toBe(400);
           expect(response.data).toEqual({ erreur: "Paramètre 'code' absent de la requête" });
@@ -101,7 +113,7 @@ describe('Le serveur des routes `/auth`', () => {
     it("sert une erreur HTTP 400 (Bad Request) si le paramètre 'state' est manquant", () => {
       expect.assertions(2);
 
-      return axios.get(`http://localhost:${port}/auth/fcplus/connexion?code=unCode`)
+      return axios.get(`http://localhost:${port}/auth/fcplus/connexion_apres_redirection?code=unCode`)
         .catch(({ response }) => {
           expect(response.status).toBe(400);
           expect(response.data).toEqual({ erreur: "Paramètre 'state' absent de la requête" });

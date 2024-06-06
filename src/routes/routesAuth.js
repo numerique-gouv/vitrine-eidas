@@ -1,5 +1,6 @@
 const express = require('express');
 
+const { redirigeDepuisNavigateur } = require('./utils');
 const connexionFCPlus = require('../api/connexionFCPlus');
 const deconnexionFCPlus = require('../api/deconnexionFCPlus');
 const creationSessionFCPlus = require('../api/creationSessionFCPlus');
@@ -35,21 +36,30 @@ const routesAuth = (config) => {
       .send(clePubliqueDansJWKSet);
   });
 
-  routes.get('/fcplus/connexion', (...args) => middleware.verifieTamponUnique(...args), (requete, reponse) => {
-    const { code, state } = requete.query;
-    if (typeof state === 'undefined' || state === '') {
-      reponse.status(400).json({ erreur: "Paramètre 'state' absent de la requête" });
-    } else if (typeof code === 'undefined' || code === '') {
-      reponse.status(400).json({ erreur: "Paramètre 'code' absent de la requête" });
-    } else {
-      connexionFCPlus(
-        { adaptateurChiffrement, fabriqueSessionFCPlus },
-        code,
-        requete,
-        reponse,
-      );
-    }
+  routes.get('/fcplus/connexion', (requete, reponse) => {
+    const paramsRequete = new URLSearchParams(requete.query).toString();
+    redirigeDepuisNavigateur(`/auth/fcplus/connexion_apres_redirection?${paramsRequete}`, reponse);
   });
+
+  routes.get(
+    '/fcplus/connexion_apres_redirection',
+    (...args) => middleware.verifieTamponUnique(...args),
+    (requete, reponse) => {
+      const { code, state } = requete.query;
+      if (typeof state === 'undefined' || state === '') {
+        reponse.status(400).json({ erreur: "Paramètre 'state' absent de la requête" });
+      } else if (typeof code === 'undefined' || code === '') {
+        reponse.status(400).json({ erreur: "Paramètre 'code' absent de la requête" });
+      } else {
+        connexionFCPlus(
+          { adaptateurChiffrement, fabriqueSessionFCPlus },
+          code,
+          requete,
+          reponse,
+        );
+      }
+    },
+  );
 
   routes.get('/fcplus/deconnexion', (requete, reponse) => (
     deconnexionFCPlus(requete, reponse)
