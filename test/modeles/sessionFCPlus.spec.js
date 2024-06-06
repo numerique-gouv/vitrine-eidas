@@ -15,10 +15,13 @@ describe('Une session FranceConnect+', () => {
   const nouvelleSession = ({
     jetonAcces = 'unJetonAcces',
     jwt = 'unJWT',
+    nonce = '',
     urlClefsPubliques = 'uneURL',
   } = {}) => {
     const session = new SessionFCPlus(config);
-    Object.assign(session, { jetonAcces, jwt, urlClefsPubliques });
+    Object.assign(session, {
+      jetonAcces, jwt, nonce, urlClefsPubliques,
+    });
 
     return session;
   };
@@ -92,10 +95,17 @@ describe('Une session FranceConnect+', () => {
       const session = nouvelleSession({ jwt: '999', urlClefsPubliques: 'http://example.com' });
 
       return session.enJSON()
-        .then((json) => expect(json).toEqual({
-          uneClef: 'uneValeur',
-          jwtSessionFCPlus: '999',
-        }));
+        .then((json) => {
+          expect(json).toHaveProperty('uneClef', 'uneValeur');
+          expect(json).toHaveProperty('jwtSessionFCPlus', '999');
+        });
+    });
+
+    it('ajoute le nonce FC+ aux infos utilisateur', () => {
+      const session = nouvelleSession({ nonce: 'abcde' });
+
+      return session.enJSON()
+        .then((json) => expect(json).toHaveProperty('nonce', 'abcde'));
     });
 
     it('lève une `ErreurEchecAuthentification` si une erreur est rencontrée', () => {

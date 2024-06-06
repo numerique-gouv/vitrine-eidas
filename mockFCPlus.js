@@ -61,6 +61,7 @@ const enJWE = (cleSignature, infos) => {
 
 const port = 4000;
 const app = express();
+let nonce;
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -78,6 +79,7 @@ app.get('/debut_session', (requete, reponse) => {
   const contexteMock = requete.query.contexte_mock;
   const etat = (contexteMock === 'etatRenvoyeInvalide') ? 'oups' : requete.query.state;
   const code = (contexteMock === 'signatureJetonInvalide') ? 'XXX' : 'abcdef';
+  nonce = (contexteMock === 'nonceInvalide') ? 'oups' : requete.query.nonce;
   reponse.redirect(`${process.env.URL_REDIRECTION_CONNEXION}?state=${etat}&code=${code}`);
 });
 
@@ -89,7 +91,7 @@ app.post('/jeton', (requete, reponse) => {
   const { code } = requete.body;
   const jeton = (code === 'XXX') ? JETON_CAS_SIGNATURE_INVALIDE : 'unJeton';
 
-  enJWE(jwkValide, {})
+  enJWE(jwkValide, { nonce })
     .then((jwe) => reponse.json({ access_token: jeton, id_token: jwe }));
 });
 
