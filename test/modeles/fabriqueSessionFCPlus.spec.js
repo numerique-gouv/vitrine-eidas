@@ -7,6 +7,7 @@ describe('La fabrique de session FC+', () => {
 
   beforeEach(() => {
     adaptateurChiffrement.dechiffreJWE = () => Promise.resolve('');
+    adaptateurChiffrement.verifieSignatureJWTDepuisJWKS = () => Promise.resolve({});
     adaptateurFranceConnectPlus.recupereDonneesJetonAcces = () => Promise.resolve({});
     adaptateurFranceConnectPlus.recupereURLClefsPubliques = () => Promise.resolve('');
   });
@@ -40,6 +41,22 @@ describe('La fabrique de session FC+', () => {
     const fabrique = new FabriqueSessionFCPlus(config);
     return fabrique.nouvelleSession('unCode')
       .then((session) => expect(session.jwt).toBe('999'));
+  });
+
+  it('conserve le nonce contenu dans le JWT', () => {
+    adaptateurChiffrement.dechiffreJWE = () => Promise.resolve('999');
+    adaptateurChiffrement.verifieSignatureJWTDepuisJWKS = (jwt) => {
+      try {
+        expect(jwt).toBe('999');
+        return Promise.resolve({ nonce: 'abc' });
+      } catch (e) {
+        return Promise.reject(e);
+      }
+    };
+
+    const fabrique = new FabriqueSessionFCPlus(config);
+    return fabrique.nouvelleSession('unCode')
+      .then((session) => expect(session.nonce).toBe('abc'));
   });
 
   it("conserve l'URL des clefs publiques FC+", () => {

@@ -12,7 +12,11 @@ class FabriqueSessionFCPlus {
 
     const conserveJWT = (jwe) => this.adaptateurChiffrement
       .dechiffreJWE(jwe)
-      .then((jwt) => { this.session.jwt = jwt; });
+      .then((jwt) => {
+        this.session.jwt = jwt;
+        return this.adaptateurChiffrement.verifieSignatureJWTDepuisJWKS(jwt);
+      })
+      .then(({ nonce }) => { this.session.nonce = nonce; });
 
     const conserveURLClefsPubliques = () => this.adaptateurFranceConnectPlus
       .recupereURLClefsPubliques()
