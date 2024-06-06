@@ -11,6 +11,7 @@ class SessionFCPlus {
 
     this.jetonAcces = undefined;
     this.jwt = undefined;
+    this.nonce = undefined;
     this.urlClefsPubliques = undefined;
   }
 
@@ -28,7 +29,10 @@ class SessionFCPlus {
         jwtInfosUtilisateur,
         this.urlClefsPubliques,
       ))
-      .then((infosDechiffrees) => Object.assign(infosDechiffrees, { jwtSessionFCPlus: this.jwt }))
+      .then((infosDechiffrees) => Object.assign(
+        infosDechiffrees,
+        { jwtSessionFCPlus: this.jwt, nonce: this.nonce },
+      ))
       .catch((e) => Promise.reject(new ErreurEchecAuthentification(e.message)));
   }
 

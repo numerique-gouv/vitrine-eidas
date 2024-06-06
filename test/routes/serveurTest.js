@@ -19,7 +19,7 @@ const serveurTest = () => {
       cleHachage: () => '',
       dechiffreJWE: () => Promise.resolve(),
       genereJeton: () => Promise.resolve(),
-      verifieJeton: () => Promise.resolve(),
+      verifieJeton: () => Promise.resolve({}),
       verifieSignatureJWTDepuisJWKS: () => Promise.resolve({}),
     };
 

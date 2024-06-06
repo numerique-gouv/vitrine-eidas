@@ -1,15 +1,22 @@
 const { stockeDansCookieSession } = require('../routes/utils');
 
 const connexionFCPlus = (config, code, requete, reponse) => {
-  const { adaptateurChiffrement, fabriqueSessionFCPlus } = config;
+  const { adaptateurChiffrement, adaptateurEnvironnement, fabriqueSessionFCPlus } = config;
 
-  requete.session.jeton = undefined;
+  const secret = adaptateurEnvironnement.secretJetonSession();
 
   return fabriqueSessionFCPlus.nouvelleSession(code)
-    .then((session) => session.enJSON())
-    .then((infos) => stockeDansCookieSession(infos, adaptateurChiffrement, requete))
+    .then((sessionFCPlus) => sessionFCPlus.enJSON())
+    .then((infos) => adaptateurChiffrement.verifieJeton(requete.session.jeton, secret)
+      .then(({ nonce }) => {
+        if (infos.nonce !== nonce) { throw new Error('nonce invalide'); }
+        return stockeDansCookieSession(infos, adaptateurChiffrement, requete);
+      }))
     .then(() => reponse.render('redirectionNavigateur', { destination: '/' }))
-    .catch((e) => reponse.status(502).json({ erreur: `Échec authentification (${e.message})` }));
+    .catch((e) => {
+      requete.session.jeton = undefined;
+      reponse.status(502).json({ erreur: `Échec authentification (${e.message})` });
+    });
 };
 
 module.exports = connexionFCPlus;
