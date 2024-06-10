@@ -37,6 +37,10 @@ describe('Le serveur des routes `/auth`', () => {
   });
 
   describe('sur GET /auth/fcplus/connexion', () => {
+    it("redirige vers une page d'erreur si le paramètre `error` est présent", () => axios
+      .get(`http://localhost:${port}/auth/fcplus/connexion?error=boum&error_description=oups`)
+      .then((reponse) => expect(reponse.data).toContain('oups')));
+
     it("sert une erreur HTTP 400 (Bad Request) si le paramètre 'code' est manquant", () => {
       expect.assertions(2);
 
