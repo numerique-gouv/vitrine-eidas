@@ -38,6 +38,7 @@ describe('Le serveur des routes `/`', () => {
         })
         .catch(leveErreur);
     });
+
     it("n'affiche pas le bouton quand le feature flip est désactivé", () => {
       expect.assertions(2);
 
