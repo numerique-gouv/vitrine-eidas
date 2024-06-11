@@ -12,6 +12,17 @@
     background-image: url(/statique/assets/images/bouton_survol_france_connect_plus.svg);
 }
 
+.bouton-eidas {
+  display: block;
+  cursor: pointer;
+
+  width: 256px;
+  height: 60px;
+  margin-top: 12px;
+  background: url(/statique/assets/images/bouton_eidas.png) no-repeat;
+  background-size: contain;
+}
+
 .nouvel-onglet::after{
   content: '';
   display: inline-block;

@@ -15,6 +15,9 @@
       </p>
       <a class="bouton-franceconnect" href="/auth/fcplus/creationSession"></a>
       <a href="https://franceconnect.gouv.fr/france-connect-plus" class="nouvel-onglet" target="_blank">Qu'est-ce que FranceConnect+ ?</a>
+      {{#avecConnexionEIDAS}}
+        <a class="bouton-eidas" href="/auth/fcplus/creationSession?eidas"></a>
+      {{/avecConnexionEIDAS}}
     </div>
   {{/infosUtilisateur}}
 {{/avecConnexionFCPlus}}
