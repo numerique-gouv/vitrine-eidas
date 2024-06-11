@@ -41,6 +41,16 @@ describe('Le serveur des routes `/auth`', () => {
       .get(`http://localhost:${port}/auth/fcplus/connexion?error=boum&error_description=oups`)
       .then((reponse) => expect(reponse.data).toContain('oups')));
 
+    it('réinitialise le cookie de session', () => axios
+      .get(`http://localhost:${port}/auth/fcplus/connexion?error=boum&error_description=oups`)
+      .then((reponse) => {
+        expect(reponse.headers).toHaveProperty('set-cookie');
+        const valeurEnteteSetCookie = reponse
+          .headers['set-cookie']
+          .find((h) => h.match(/session=;/));
+        expect(valeurEnteteSetCookie).toContain('session=;');
+      }));
+
     it("sert une erreur HTTP 400 (Bad Request) si le paramètre 'code' est manquant", () => {
       expect.assertions(2);
 
