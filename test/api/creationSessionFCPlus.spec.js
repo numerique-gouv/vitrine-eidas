@@ -117,6 +117,7 @@ describe('Le requêteur de création de session FC+', () => {
   describe('Si utilisation bridge eIDAS', () => {
     it('renseigne le paramètre `idp_hint` avec la valeur `eidas-bridge`', () => {
       expect.assertions(1);
+      requete.query.eidas = '';
       adaptateurEnvironnement.fournisseurIdentiteSuggere = () => 'eidas-bridge';
 
       prepareVerificationPresenceElement('idp_hint=eidas-bridge', reponse);
