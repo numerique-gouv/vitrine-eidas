@@ -15,7 +15,7 @@ const connexionFCPlus = (config, code, requete, reponse) => {
     .then(() => reponse.render('redirectionNavigateur', { destination: '/' }))
     .catch((e) => {
       requete.session.jeton = undefined;
-      reponse.status(502).json({ erreur: `Échec authentification (${e.message})` });
+      reponse.render('erreur', { descriptionErreur: `Échec authentification (${e.message})` });
     });
 };
 
