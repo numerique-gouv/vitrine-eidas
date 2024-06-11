@@ -5,11 +5,11 @@
     width: 256px;
     height: 60px;
     margin-bottom: 12px;
-    background-image: url("/statique/assets/images/bouton_france_connect_plus.svg");
+    background-image: url(/statique/assets/images/bouton_france_connect_plus.svg);
 }
 
 .bouton-franceconnect:hover {
-    background-image: url("/statique/assets/images/bouton_survol_france_connect_plus.svg");
+    background-image: url(/statique/assets/images/bouton_survol_france_connect_plus.svg);
 }
 
 .nouvel-onglet::after{
@@ -18,7 +18,7 @@
   width: 1em;
   height: 1em;
 
-  mask: url("/statique/assets/images/square.svg");
+  mask: url(/statique/assets/images/square.svg);
   mask-size: contain;
   background-color: #00e;
   transform: translateX(.2em) translateY(.25em);
