@@ -11,3 +11,14 @@
 .bouton-franceconnect:hover {
     background-image: url("/statique/assets/images/bouton_survol_france_connect_plus.svg");
 }
+
+.nouvel-onglet::after{
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+
+  background-image: url("/statique/assets/images/square.svg");
+  background-size: contain;
+  transform: translateX(.2em) translateY(.25em);
+}
