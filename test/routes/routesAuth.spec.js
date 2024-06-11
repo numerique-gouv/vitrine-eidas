@@ -111,18 +111,13 @@ describe('Le serveur des routes `/auth`', () => {
           .catch(leveErreur);
       });
 
-      it("sert une erreur HTTP 502 (Bad Gateway) quand l'authentification échoue", () => {
-        expect.assertions(2);
-
+      it("sert une page d'erreur quand l'authentification échoue", () => {
         serveur.fabriqueSessionFCPlus().nouvelleSession = () => Promise.resolve({
           enJSON: () => Promise.reject(new Error('Oups')),
         });
 
         return axios.get(`http://localhost:${port}/auth/fcplus/connexion_apres_redirection?code=unCode&state=unState`)
-          .catch(({ response }) => {
-            expect(response.status).toBe(502);
-            expect(response.data).toEqual({ erreur: 'Échec authentification (Oups)' });
-          });
+          .then((reponse) => expect(reponse.data).toContain('Échec authentification (Oups)'));
       });
     });
   });

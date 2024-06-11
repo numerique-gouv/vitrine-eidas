@@ -16,7 +16,6 @@ describe('Le requêteur de connexion FC+', () => {
       enJSON: () => Promise.resolve({}),
     });
     requete.session = {};
-    reponse.json = () => Promise.resolve();
     reponse.render = () => Promise.resolve();
     reponse.status = () => reponse;
   });
@@ -40,8 +39,8 @@ describe('Le requêteur de connexion FC+', () => {
       .then(() => expect(requete.session.jeton).toBeUndefined());
   });
 
-  it('retourne une erreur HTTP 502 si le nonce retourné est différent du nonce en session', () => {
-    expect.assertions(2);
+  it("sert une page d'erreur si le nonce retourné est différent du nonce en session", () => {
+    expect.assertions(1);
     adaptateurChiffrement.verifieJeton = () => Promise.resolve({ nonce: 'unNonce' });
 
     requete.session.jeton = { nonce: 'abcde' };
@@ -49,14 +48,9 @@ describe('Le requêteur de connexion FC+', () => {
       enJSON: () => Promise.resolve({ nonce: 'oups' }),
     });
 
-    reponse.status = (status) => {
-      expect(status).toBe(502);
-      return reponse;
-    };
-
-    reponse.json = (message) => {
+    reponse.render = (_nomModelePage, { descriptionErreur }) => {
       try {
-        expect(message.erreur).toBe('Échec authentification (nonce invalide)');
+        expect(descriptionErreur).toBe('Échec authentification (nonce invalide)');
         return Promise.resolve();
       } catch (e) {
         return Promise.reject(e);
