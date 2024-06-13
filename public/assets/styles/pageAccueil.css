@@ -19,7 +19,11 @@
 
 .bouton.eidas {
   margin-top: 12px;
-  background-image: url(/statique/assets/images/bouton_eidas.png);
+  background-image: url(/statique/assets/images/bouton_eidas.svg);
+}
+
+.bouton.eidas:hover {
+  background-image: url(/statique/assets/images/bouton_survol_eIDAS.svg);
 }
 
 .nouvel-onglet::after{
