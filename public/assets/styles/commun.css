@@ -1,3 +1,99 @@
+html {
+  height: 100%;
+}
+
 body {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  margin: 0;
   font-family: 'Marianne';
+}
+
+header, main, footer {
+  padding: 2em;
+}
+
+header, footer .logos {
+  display: flex;
+  align-items: center;
+  column-gap: 1.2em;
+}
+
+header {
+  box-shadow: 0px 3px 10px #bbb;
+}
+
+main {
+  flex-grow: 1;
+  margin: 3em 0 5em;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-top: 2px solid #02b
+}
+
+footer ul {
+  display: flex;
+  column-gap: 3em;
+  font-size: 0.6em;
+}
+
+footer li {
+  list-style-type: none;
+}
+
+footer a {
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+}
+
+.bloc-eidas a {
+  display: flex;
+  align-items: center;
+  column-gap: .2em;
+
+  text-decoration: none;
+}
+
+.devise, .logo-eidas, .marianne {
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.marianne {
+  height: .75em;
+
+  background-image: url(/statique/assets/images/marianne.svg);
+}
+
+.republique-francaise {
+  padding: .1em 0;
+  font-size: .7em;
+  font-weight: bold;
+  line-height: 1em;
+}
+
+.devise {
+  height: 1.25em;
+
+  background-image: url(/statique/assets/images/devise.svg);
+}
+
+.logo-eidas {
+  width: 2.5em;
+  height: 2.5em;
+  background-image: url(/statique/assets/images/logo-eidas.png);
+}
+
+.titre-eidas {
+  color: #779;
+  font-size: .7em;
+  font-weight: bold;
 }
