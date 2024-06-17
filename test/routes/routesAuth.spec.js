@@ -77,7 +77,7 @@ describe('Le serveur des routes `/auth`', () => {
         .then((reponse) => expect(reponse.data).toContain('<meta http-equiv="refresh" content="0; url=\'/auth/fcplus/connexion_apres_redirection'))
         .catch(leveErreur));
 
-      it('transmets les paramètres reçus dans la requête', () => axios
+      it('transmet les paramètres reçus dans la requête', () => axios
         .get(`http://localhost:${port}/auth/fcplus/connexion?state=unState&code=unCode`)
         .then((reponse) => expect(reponse.data).toContain('?state=unState&code=unCode'))
         .catch(leveErreur));

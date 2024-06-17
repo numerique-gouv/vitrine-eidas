@@ -1,6 +1,5 @@
 const cookieSession = require('cookie-session');
 const express = require('express');
-const mustacheExpress = require('mustache-express');
 
 const routesAuth = require('./routes/routesAuth');
 const routesBase = require('./routes/routesBase');
@@ -18,9 +17,8 @@ const creeServeur = (config) => {
 
   app.set('trust proxy', 1);
 
-  app.set('views', `${__dirname}/vues`);
-  app.set('view engine', 'mustache');
-  app.engine('mustache', mustacheExpress());
+  app.set('views', './src/vues');
+  app.set('view engine', 'pug');
 
   app.use('/statique', express.static('public'));
 
