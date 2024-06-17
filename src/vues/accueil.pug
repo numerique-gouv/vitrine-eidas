@@ -6,7 +6,7 @@ block styles
 block page
   if avecConnexionFCPlus
     if infosUtilisateur
-      p= `Utilisateur courant : ${infosUtilisateur.given_name} ${infosUtilisateur.family_name}`
+      p Utilisateur courant : #{infosUtilisateur.afficheToi()}
       a(href = '/auth/fcplus/destructionSession') Déconnexion
     else
       p Pas d'utilisateur courant

@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const serveurTest = require('./serveurTest');
 const { leveErreur } = require('./utils');
+const Utilisateur = require('../../src/modeles/utilisateur');
 
 describe('Le serveur des routes `/`', () => {
   const serveur = serveurTest();
@@ -25,10 +26,10 @@ describe('Le serveur des routes `/`', () => {
 
     it("affiche prénom et nom de l'utilisateur courant s'il existe", () => {
       serveur.middleware().reinitialise({
-        utilisateurCourant: {
-          given_name: 'Sandra',
-          family_name: 'Nicouette',
-        },
+        utilisateurCourant: new Utilisateur({
+          prenom: 'Sandra',
+          nomUsage: 'Nicouette',
+        }),
       });
 
       return axios.get(`http://localhost:${port}/`)

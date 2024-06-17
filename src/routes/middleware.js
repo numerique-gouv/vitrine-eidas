@@ -1,3 +1,5 @@
+const Utilisateur = require('../modeles/utilisateur');
+
 class Middleware {
   constructor(config) {
     this.adaptateurChiffrement = config.adaptateurChiffrement;
@@ -6,7 +8,9 @@ class Middleware {
 
   renseigneUtilisateurCourant(requete, _reponse, suite) {
     return this.adaptateurChiffrement.verifieJeton(requete.session.jeton, this.secret)
-      .then((infosUtilisateur) => { requete.utilisateurCourant = infosUtilisateur; })
+      .then((infosUtilisateur) => {
+        requete.utilisateurCourant = new Utilisateur(infosUtilisateur);
+      })
       .catch(() => { requete.utilisateurCourant = undefined; })
       .then(() => suite());
   }

@@ -29,10 +29,12 @@ class SessionFCPlus {
         jwtInfosUtilisateur,
         this.urlClefsPubliques,
       ))
-      .then((infosDechiffrees) => Object.assign(
-        infosDechiffrees,
-        { jwtSessionFCPlus: this.jwt, nonce: this.nonce },
-      ))
+      .then((infosDechiffrees) => ({
+        prenom: infosDechiffrees.given_name,
+        nomUsage: infosDechiffrees.family_name,
+        jwtSessionFCPlus: this.jwt,
+        nonce: this.nonce,
+      }))
       .catch((e) => Promise.reject(new ErreurEchecAuthentification(e.message)));
   }
 
