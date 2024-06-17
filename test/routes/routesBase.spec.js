@@ -20,7 +20,7 @@ describe('Le serveur des routes `/`', () => {
       axios.get(`http://localhost:${port}/`)
         .then((reponse) => {
           expect(reponse.status).toBe(200);
-          expect(reponse.data).toContain("Pas d'utilisateur courant");
+          expect(reponse.data).toContain("Choisissez votre cas d'usage");
         })
         .catch(leveErreur)));
 
@@ -35,7 +35,7 @@ describe('Le serveur des routes `/`', () => {
       return axios.get(`http://localhost:${port}/`)
         .then((reponse) => {
           expect(reponse.status).toBe(200);
-          expect(reponse.data).toContain('Utilisateur courant : Sandra Nicouette');
+          expect(reponse.data).toContain('Sandra Nicouette');
         })
         .catch(leveErreur);
     });
