@@ -1,7 +1,14 @@
 extends base
 
 block styles
-  link(rel='stylesheet', href='/statique/assets/styles/pageAccueil.css')
+  link(rel='stylesheet', href='/statique/assets/styles/accueil.css')
+
+block bandeau
+  section
+    .titre
+      h1 Bienvenue sur le démonstrateur d'eIDAS
+      h2 Vous trouverez sur ce site l'ensemble des informations sur le fonctionnement et l'utilisation d'eIDAS
+    .image-site-vitrine
 
 block page
   if avecConnexionFCPlus
