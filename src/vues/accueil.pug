@@ -6,10 +6,10 @@ block styles
 block page
   if avecConnexionFCPlus
     if infosUtilisateur
-      p Utilisateur courant : #{infosUtilisateur.afficheToi()}
+      p Félicitations #{infosUtilisateur.afficheToi()}, vous avez réussi à vous authentifier avec eIDAS !
       a(href = '/auth/fcplus/destructionSession') Déconnexion
     else
-      p Pas d'utilisateur courant
+      h1 Choisissez votre cas d'usage
       div
         p.
           FranceConnect+ est la solution proposée par l'État pour renforcer la
