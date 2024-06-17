@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const { leveErreur } = require('./utils');
 const serveurTest = require('./serveurTest');
+const Utilisateur = require('../../src/modeles/utilisateur');
 
 describe('Le serveur des routes `/auth`', () => {
   const serveur = serveurTest();
@@ -143,7 +144,7 @@ describe('Le serveur des routes `/auth`', () => {
   describe('sur GET /auth/fcplus/destructionSession', () => {
     it("appelle le middleware pour renseigner les infos de l'utilisateur courant", () => {
       serveur.middleware().reinitialise({
-        utilisateurCourant: { given_name: '', family_name: '', jwtSessionFCPlus: 'abcdef' },
+        utilisateurCourant: new Utilisateur({ prenom: 'Jean', nomUsage: 'Max', jwtSessionFCPlus: 'abcdef' }),
       });
 
       serveur.adaptateurFranceConnectPlus().urlDestructionSession = () => Promise.resolve(`http://localhost:${port}`);
