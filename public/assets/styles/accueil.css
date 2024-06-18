@@ -3,12 +3,12 @@ section {
   justify-content: space-between;
   margin-top: 3em;
   padding: 1em 3em;
-  background-color: #f5f5fe;
+  background-color: var(--lavande-fond-bandeau);
 }
 
 section h1 {
   font-size: 2em;
-  color: #000091;
+  color: var(--bleu-systeme-design-etat);
 }
 
 section h2 {
@@ -61,6 +61,6 @@ section h2 {
 
   mask: url(/statique/assets/images/icone_nouvel_onglet.svg);
   mask-size: contain;
-  background-color: #00e;
+  background-color: var(--bleu-titre);
   transform: translateX(.2em) translateY(.25em);
 }
