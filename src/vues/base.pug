@@ -7,20 +7,14 @@ html(lang = 'fr', xml:lang = 'fr', xmlns = 'http://www.w3.org/1999/xhtml')
     title Vitrine eIDAS-France
     link(rel='stylesheet', href='/statique/assets/styles/fontes.css')
     link(rel='stylesheet', href='/statique/assets/styles/palette.css')
+    link(rel='stylesheet', href='/statique/assets/styles/republiqueFrancaise.css')
+    link(rel='stylesheet', href='/statique/assets/styles/eidas.css')
     link(rel='stylesheet', href='/statique/assets/styles/commun.css')
     block styles
 
   body
     header
-      .bloc-marque
-        .marianne
-        .republique-francaise RÉPUBLIQUE<br>FRANÇAISE
-        .devise
-      .bloc-eidas
-        a(href='https://eidas.ec.europa.eu/', target='_blank')
-          .logo-eidas
-          .titre-eidas European<br>digital ID
-
+      include fragments/blocMarque
     .bandeau
       block bandeau
 
@@ -29,14 +23,7 @@ html(lang = 'fr', xml:lang = 'fr', xmlns = 'http://www.w3.org/1999/xhtml')
 
     footer
       .logos
-        .bloc-marque
-          .marianne
-          .republique-francaise RÉPUBLIQUE<br>FRANÇAISE
-          .devise
-        .bloc-eidas
-          a(href='https://eidas.ec.europa.eu/', target='_blank')
-            .logo-eidas
-            .titre-eidas European<br>digital ID
+        include fragments/blocMarque
       ul
         li: a(href='https://agentconnect.gouv.fr', target='_blank') agentconnect.gouv.fr
         li: a(href='https://info.gouv.fr', target='_blank') info.gouv.fr

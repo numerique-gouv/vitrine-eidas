@@ -63,39 +63,3 @@ footer a {
 
   text-decoration: none;
 }
-
-.devise, .logo-eidas, .marianne {
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-
-.marianne {
-  height: .75em;
-
-  background-image: url(/statique/assets/images/marianne.svg);
-}
-
-.republique-francaise {
-  padding: .1em 0;
-  font-size: .7em;
-  font-weight: bold;
-  line-height: 1em;
-}
-
-.devise {
-  height: 1.25em;
-
-  background-image: url(/statique/assets/images/devise.svg);
-}
-
-.logo-eidas {
-  width: 2.5em;
-  height: 2.5em;
-  background-image: url(/statique/assets/images/logo-eidas.png);
-}
-
-.titre-eidas {
-  color: var(--gris-eidas);
-  font-size: .7em;
-  font-weight: bold;
-}

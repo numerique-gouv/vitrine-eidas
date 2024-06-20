@@ -1,0 +1,13 @@
+.logo-eidas {
+  width: 2.5em;
+  height: 2.5em;
+  background-image: url(/statique/assets/images/logo-eidas.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.titre-eidas {
+  color: var(--gris-eidas);
+  font-size: .7em;
+  font-weight: bold;
+}
