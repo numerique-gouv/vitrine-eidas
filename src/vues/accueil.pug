@@ -27,8 +27,9 @@ block page
             FranceConnect+ est la solution proposée par l'État pour renforcer la
             sécurité de vos services en ligne les plus sensibles.
           a.bouton.franceconnect(href = '/auth/fcplus/creationSession')
-          a.nouvel-onglet(href = 'https://franceconnect.gouv.fr/france-connect-plus', target = '_blank').
-            Qu'est-ce que FranceConnect+ ?
+          a.nouvel-onglet.description-fcplus(
+            href = 'https://franceconnect.gouv.fr/france-connect-plus', target = '_blank'
+          ) Qu'est-ce que FranceConnect+ ?
 
   else
     p Pas d'utilisateur courant
