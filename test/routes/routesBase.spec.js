@@ -16,11 +16,11 @@ describe('Le serveur des routes `/`', () => {
   afterEach((suite) => serveur.arrete(suite));
 
   describe('sur GET /', () => {
-    it("affiche qu'il n'y a pas pas d'utilisateur courant par défaut", () => (
+    it("affiche un bouton de connexion s'il n'y a pas d'utilisateur courant", () => (
       axios.get(`http://localhost:${port}/`)
         .then((reponse) => {
           expect(reponse.status).toBe(200);
-          expect(reponse.data).toContain("Choisissez votre cas d'usage");
+          expect(reponse.data).toMatch(/<a class="bouton .*" href="\/auth\/fcplus\/creationSession.*">/);
         })
         .catch(leveErreur)));
 
