@@ -38,9 +38,10 @@ describe('Le serveur des routes `/auth`', () => {
   });
 
   describe('sur GET /auth/fcplus/connexion', () => {
-    it("redirige vers une page d'erreur si le paramètre `error` est présent", () => axios
-      .get(`http://localhost:${port}/auth/fcplus/connexion?error=boum&error_description=oups`)
-      .then((reponse) => expect(reponse.data).toContain('oups')));
+    it("redirige vers la page d'accueil si le paramètre `error` est présent", () => axios
+      .get(`http://localhost:${port}/auth/fcplus/connexion?error=boum`)
+      .then((reponse) => expect(reponse.data).toContain('<meta http-equiv="refresh" content="0; url=\'/\'">'))
+      .catch(leveErreur));
 
     it('réinitialise le cookie de session', () => axios
       .get(`http://localhost:${port}/auth/fcplus/connexion?error=boum&error_description=oups`)
