@@ -35,14 +35,21 @@ describe('Le middleware OOTS-France', () => {
   });
 
   it("renseigne les infos de l'utilisateur courant dans la requête", (suite) => {
-    adaptateurChiffrement.verifieJeton = () => Promise.resolve({ prenom: 'Pierre', nomUsage: 'Jax' });
+    adaptateurChiffrement.verifieJeton = () => Promise.resolve({
+      jwtSessionFCPlus: 'abcdef',
+      prenom: 'Pierre',
+      nomUsage: 'Jax',
+    });
 
     const middleware = new Middleware(config);
     expect(requete.utilisateurCourant).toBeUndefined();
 
     middleware.renseigneUtilisateurCourant(requete, null, () => {
       try {
-        expect(requete.utilisateurCourant).toEqual({ prenom: 'Pierre', nomUsage: 'Jax' });
+        const utilisateur = requete.utilisateurCourant;
+        expect(utilisateur.jwtSessionFCPlus).toEqual('abcdef');
+        expect(utilisateur.prenom).toEqual('Pierre');
+        expect(utilisateur.nomUsage).toEqual('Jax');
         suite();
       } catch (e) { suite(e); }
     })
