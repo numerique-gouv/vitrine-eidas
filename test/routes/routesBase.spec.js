@@ -27,6 +27,7 @@ describe('Le serveur des routes `/`', () => {
     it("affiche prénom et nom de l'utilisateur courant s'il existe", () => {
       serveur.middleware().reinitialise({
         utilisateurCourant: new Utilisateur({
+          jwtSessionFCPlus: 'abcdef',
           prenom: 'Sandra',
           nomUsage: 'Nicouette',
         }),
