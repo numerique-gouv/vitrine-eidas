@@ -23,7 +23,6 @@ describe('Le requêteur de création de session FC+', () => {
     adaptateurChiffrement.cleHachage = () => '';
     adaptateurChiffrement.genereJeton = () => Promise.resolve();
     adaptateurEnvironnement.avecMock = () => false;
-    adaptateurEnvironnement.fournisseurIdentiteSuggere = () => '';
     adaptateurEnvironnement.identifiantClient = () => '';
     adaptateurEnvironnement.urlRedirectionConnexion = () => '';
     adaptateurFranceConnectPlus.urlCreationSession = () => Promise.resolve('');
@@ -118,7 +117,6 @@ describe('Le requêteur de création de session FC+', () => {
     it('renseigne le paramètre `idp_hint` avec la valeur `eidas-bridge`', () => {
       expect.assertions(1);
       requete.query.eidas = '';
-      adaptateurEnvironnement.fournisseurIdentiteSuggere = () => 'eidas-bridge';
 
       prepareVerificationPresenceElement('idp_hint=eidas-bridge', reponse);
       return creationSessionFCPlus(config, requete, reponse);

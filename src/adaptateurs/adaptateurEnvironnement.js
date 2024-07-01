@@ -6,8 +6,6 @@ const avecMock = () => process.env.AVEC_MOCK === 'true';
 
 const clePriveeJWK = () => JSON.parse(atob(process.env.CLE_PRIVEE_JWK_EN_BASE64));
 
-const fournisseurIdentiteSuggere = () => (process.env.AVEC_AUTHENTIFICATION_EIDAS === 'true' ? 'eidas-bridge' : '');
-
 const identifiantClient = () => process.env.IDENTIFIANT_CLIENT_FCPLUS;
 
 const parametresRequeteJeton = () => ({
@@ -29,7 +27,6 @@ module.exports = {
   avecConnexionFCPlus,
   avecMock,
   clePriveeJWK,
-  fournisseurIdentiteSuggere,
   identifiantClient,
   parametresRequeteJeton,
   secretJetonSession,

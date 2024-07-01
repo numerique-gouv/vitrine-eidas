@@ -13,7 +13,7 @@ const creationSessionFCPlus = (config, requete, reponse) => {
     : '';
 
   const fournisseurIdentiteSuggere = typeof requete.query.eidas !== 'undefined'
-    ? adaptateurEnvironnement.fournisseurIdentiteSuggere()
+    ? 'eidas-bridge'
     : '';
 
   const construisURL = () => adaptateurFranceConnectPlus.urlCreationSession()

@@ -27,7 +27,6 @@ const serveurTest = () => {
       avecConnexionFCPlus: () => true,
       avecEnvoiCookieSurHTTP: () => true,
       avecMock: () => true,
-      fournisseurIdentiteSuggere: () => '',
       identifiantClient: () => '',
       secretJetonSession: () => 'secret',
       urlRedirectionConnexion: () => '',
