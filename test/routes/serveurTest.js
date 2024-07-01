@@ -24,7 +24,6 @@ const serveurTest = () => {
     };
 
     adaptateurEnvironnement = {
-      avecConnexionFCPlus: () => true,
       avecEnvoiCookieSurHTTP: () => true,
       avecMock: () => true,
       identifiantClient: () => '',
