@@ -70,35 +70,27 @@ const routesAuth = (config) => {
   ));
 
   routes.get('/fcplus/destructionSession', (...args) => middleware.renseigneUtilisateurCourant(...args), (requete, reponse) => {
-    if (adaptateurEnvironnement.avecConnexionFCPlus()) {
-      destructionSessionFCPlus(
-        {
-          adaptateurChiffrement,
-          adaptateurEnvironnement,
-          adaptateurFranceConnectPlus,
-        },
-        requete,
-        reponse,
-      );
-    } else {
-      reponse.status(501).send('Not Implemented Yet!');
-    }
+    destructionSessionFCPlus(
+      {
+        adaptateurChiffrement,
+        adaptateurEnvironnement,
+        adaptateurFranceConnectPlus,
+      },
+      requete,
+      reponse,
+    );
   });
 
   routes.get('/fcplus/creationSession', (requete, reponse) => {
-    if (adaptateurEnvironnement.avecConnexionFCPlus()) {
-      creationSessionFCPlus(
-        {
-          adaptateurChiffrement,
-          adaptateurEnvironnement,
-          adaptateurFranceConnectPlus,
-        },
-        requete,
-        reponse,
-      );
-    } else {
-      reponse.status(501).send('Not Implemented Yet!');
-    }
+    creationSessionFCPlus(
+      {
+        adaptateurChiffrement,
+        adaptateurEnvironnement,
+        adaptateurFranceConnectPlus,
+      },
+      requete,
+      reponse,
+    );
   });
 
   return routes;

@@ -1,5 +1,3 @@
-const avecConnexionFCPlus = () => process.env.AVEC_CONNEXION_FC_PLUS === 'true';
-
 const avecEnvoiCookieSurHTTP = () => process.env.AVEC_ENVOI_COOKIE_SUR_HTTP === 'true';
 
 const avecMock = () => process.env.AVEC_MOCK === 'true';
@@ -24,7 +22,6 @@ const urlRedirectionDeconnexion = () => process.env.URL_REDIRECTION_DECONNEXION;
 
 module.exports = {
   avecEnvoiCookieSurHTTP,
-  avecConnexionFCPlus,
   avecMock,
   clePriveeJWK,
   identifiantClient,
