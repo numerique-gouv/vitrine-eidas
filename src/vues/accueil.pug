@@ -18,18 +18,17 @@ block page
       p Félicitations #{infosUtilisateur.afficheToi()}, vous avez réussi à vous authentifier avec eIDAS !
       a(href = '/auth/fcplus/destructionSession') Déconnexion
     else
+      h1 Je me connecte
       div
-        if avecConnexionEIDAS
-          h1 Je me connecte avec le bouton eIDAS
-          a.bouton.eidas(href = '/auth/fcplus/creationSession?eidas')
-        else
-          p.
-            FranceConnect+ est la solution proposée par l'État pour renforcer la
-            sécurité de vos services en ligne les plus sensibles.
-          a.bouton.franceconnect(href = '/auth/fcplus/creationSession')
-          a.nouvel-onglet.description-fcplus(
-            href = 'https://franceconnect.gouv.fr/france-connect-plus', target = '_blank'
-          ) Qu'est-ce que FranceConnect+ ?
+        p.
+          FranceConnect+ est la solution proposée par l'État pour renforcer la
+          sécurité de vos services en ligne les plus sensibles.
+        a.bouton.franceconnect(href = '/auth/fcplus/creationSession')
+        a.nouvel-onglet.description-fcplus(
+          href = 'https://franceconnect.gouv.fr/france-connect-plus', target = '_blank'
+        ) Qu'est-ce que FranceConnect+ ?
+
+        a.bouton.eidas(href = '/auth/fcplus/creationSession?eidas')
 
   else
     p Pas d'utilisateur courant
