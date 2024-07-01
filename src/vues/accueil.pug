@@ -12,13 +12,10 @@ block bandeau
     .image-site-vitrine
 
 block page
-  if avecConnexionFCPlus
-    if infosUtilisateur
-      p Félicitations #{infosUtilisateur.afficheToi()}, vous avez réussi à vous authentifier avec eIDAS !
-      a(href = '/auth/fcplus/destructionSession') Déconnexion
-    else
-      div
-        h1 Je me connecte avec le bouton eIDAS
-        a.bouton.eidas(href = '/auth/fcplus/creationSession?eidas')
+  if infosUtilisateur
+    p Félicitations #{infosUtilisateur.afficheToi()}, vous avez réussi à vous authentifier avec eIDAS !
+    a(href = '/auth/fcplus/destructionSession') Déconnexion
   else
-    p Pas d'utilisateur courant
+    div
+      h1 Je me connecte avec le bouton eIDAS
+      a.bouton.eidas(href = '/auth/fcplus/creationSession?eidas')
