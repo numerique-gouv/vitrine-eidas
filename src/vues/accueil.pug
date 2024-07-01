@@ -2,7 +2,6 @@ extends base
 
 block styles
   link(rel='stylesheet', href='/statique/assets/styles/accueil.css')
-  link(rel='preload', href='/statique/assets/images/bouton_survol_france_connect_plus.svg' as='image')
   link(rel='preload', href='/statique/assets/images/bouton_survol_eIDAS.svg' as='image')
 
 block bandeau
@@ -19,17 +18,7 @@ block page
       a(href = '/auth/fcplus/destructionSession') Déconnexion
     else
       div
-        if avecConnexionEIDAS
-          h1 Je me connecte avec le bouton eIDAS
-          a.bouton.eidas(href = '/auth/fcplus/creationSession?eidas')
-        else
-          p.
-            FranceConnect+ est la solution proposée par l'État pour renforcer la
-            sécurité de vos services en ligne les plus sensibles.
-          a.bouton.franceconnect(href = '/auth/fcplus/creationSession')
-          a.nouvel-onglet.description-fcplus(
-            href = 'https://franceconnect.gouv.fr/france-connect-plus', target = '_blank'
-          ) Qu'est-ce que FranceConnect+ ?
-
+        h1 Je me connecte avec le bouton eIDAS
+        a.bouton.eidas(href = '/auth/fcplus/creationSession?eidas')
   else
     p Pas d'utilisateur courant
