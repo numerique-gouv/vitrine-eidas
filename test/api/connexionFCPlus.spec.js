@@ -39,8 +39,8 @@ describe('Le requêteur de connexion FC+', () => {
       .then(() => expect(requete.session.jeton).toBeUndefined());
   });
 
-  it("sert une page d'erreur si le nonce retourné est différent du nonce en session", () => {
-    expect.assertions(1);
+  it('redirige vers la destruction de session FC+ si le nonce retourné est différent du nonce en session', () => {
+    expect.assertions(2);
     adaptateurChiffrement.verifieJeton = () => Promise.resolve({ nonce: 'unNonce' });
 
     requete.session.jeton = { nonce: 'abcde' };
@@ -48,9 +48,10 @@ describe('Le requêteur de connexion FC+', () => {
       enJSON: () => Promise.resolve({ nonce: 'oups' }),
     });
 
-    reponse.render = (_nomModelePage, { descriptionErreur }) => {
+    reponse.render = (nomModelePage, { destination }) => {
       try {
-        expect(descriptionErreur).toBe('Échec authentification (nonce invalide)');
+        expect(nomModelePage).toBe('redirectionNavigateur');
+        expect(destination).toBe('/auth/fcplus/destructionSession');
         return Promise.resolve();
       } catch (e) {
         return Promise.reject(e);

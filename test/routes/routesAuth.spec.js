@@ -123,13 +123,14 @@ describe('Le serveur des routes `/auth`', () => {
           .catch(leveErreur);
       });
 
-      it("sert une page d'erreur quand l'authentification échoue", () => {
+      it("redirige vers la destruction de session FranceConnect+ quand l'authentification échoue", () => {
         serveur.fabriqueSessionFCPlus().nouvelleSession = () => Promise.resolve({
           enJSON: () => Promise.reject(new Error('Oups')),
         });
 
         return axios.get(`http://localhost:${port}/auth/fcplus/connexion_apres_redirection?code=unCode&state=unState`)
-          .then((reponse) => expect(reponse.data).toContain('Échec authentification (Oups)'));
+          .then((reponse) => expect(reponse.data).toContain('<meta http-equiv="refresh" content="0; url=\'/auth/fcplus/destructionSession\'">'))
+          .catch(leveErreur);
       });
     });
   });
