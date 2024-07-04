@@ -4,7 +4,13 @@ describe('Le requêteur de connexion FC+', () => {
   const adaptateurChiffrement = {};
   const adaptateurEnvironnement = {};
   const fabriqueSessionFCPlus = {};
-  const config = { adaptateurChiffrement, adaptateurEnvironnement, fabriqueSessionFCPlus };
+  const journal = {};
+  const config = {
+    adaptateurChiffrement,
+    adaptateurEnvironnement,
+    fabriqueSessionFCPlus,
+    journal,
+  };
   const requete = {};
   const reponse = {};
 
@@ -15,6 +21,7 @@ describe('Le requêteur de connexion FC+', () => {
     fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve({
       enJSON: () => Promise.resolve({}),
     });
+    journal.consigne = () => {};
     requete.session = {};
     reponse.render = () => Promise.resolve();
     reponse.status = () => reponse;
@@ -39,25 +46,38 @@ describe('Le requêteur de connexion FC+', () => {
       .then(() => expect(requete.session.jeton).toBeUndefined());
   });
 
-  it('redirige vers la destruction de session FC+ si le nonce retourné est différent du nonce en session', () => {
-    expect.assertions(2);
-    adaptateurChiffrement.verifieJeton = () => Promise.resolve({ nonce: 'unNonce' });
+  describe('quand nonce retourné diffère du nonce en session', () => {
+    beforeEach(() => {
+      adaptateurChiffrement.verifieJeton = () => Promise.resolve({ nonce: 'unNonce' });
 
-    requete.session.jeton = { nonce: 'abcde' };
-    fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve({
-      enJSON: () => Promise.resolve({ nonce: 'oups' }),
+      requete.session.jeton = { nonce: 'abcde' };
+      fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve({
+        enJSON: () => Promise.resolve({ nonce: 'oups' }),
+      });
     });
 
-    reponse.render = (nomModelePage, { destination }) => {
-      try {
-        expect(nomModelePage).toBe('redirectionNavigateur');
-        expect(destination).toBe('/auth/fcplus/destructionSession');
-        return Promise.resolve();
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    };
+    it("journalise l'erreur", () => {
+      expect.assertions(1);
 
-    return connexionFCPlus(config, 'unCode', requete, reponse);
+      journal.consigne = (entree) => { expect(entree).toBe('Échec authentification (nonce invalide)'); };
+
+      return connexionFCPlus(config, 'unCode', requete, reponse);
+    });
+
+    it('redirige vers la destruction de session FC+', () => {
+      expect.assertions(2);
+
+      reponse.render = (nomModelePage, { destination }) => {
+        try {
+          expect(nomModelePage).toBe('redirectionNavigateur');
+          expect(destination).toBe('/auth/fcplus/destructionSession');
+          return Promise.resolve();
+        } catch (e) {
+          return Promise.reject(e);
+        }
+      };
+
+      return connexionFCPlus(config, 'unCode', requete, reponse);
+    });
   });
 });

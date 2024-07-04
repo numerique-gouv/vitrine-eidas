@@ -2,6 +2,7 @@ const SiteVitrine = require('./src/siteVitrine');
 const adaptateurChiffrement = require('./src/adaptateurs/adaptateurChiffrement');
 const adaptateurEnvironnement = require('./src/adaptateurs/adaptateurEnvironnement');
 const adaptateurFranceConnectPlus = require('./src/adaptateurs/adaptateurFranceConnectPlus');
+const journal = require('./src/adaptateurs/journal');
 const FabriqueSessionFCPlus = require('./src/modeles/fabriqueSessionFCPlus');
 const Middleware = require('./src/routes/middleware');
 
@@ -16,15 +17,12 @@ const serveur = SiteVitrine.creeServeur({
   adaptateurEnvironnement,
   adaptateurFranceConnectPlus,
   fabriqueSessionFCPlus,
+  journal,
   middleware,
 });
 
 const port = process.env.PORT || 3000;
 
 serveur.ecoute(port, () => {
-  /* eslint-disable no-console */
-
-  console.log(`Le site vitrine est démarré et écoute le port ${port} !…`);
-
-  /* eslint-enable no-console */
+  journal.consigne(`Le site vitrine est démarré et écoute le port ${port} !…`);
 });

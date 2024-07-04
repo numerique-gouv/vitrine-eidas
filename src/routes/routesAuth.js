@@ -11,6 +11,7 @@ const routesAuth = (config) => {
     adaptateurEnvironnement,
     adaptateurFranceConnectPlus,
     fabriqueSessionFCPlus,
+    journal,
     middleware,
   } = config;
 
@@ -56,12 +57,13 @@ const routesAuth = (config) => {
     (...args) => middleware.verifieTamponUnique(...args),
     (requete, reponse) => {
       const { code } = requete.query;
-      connexionFCPlus(
-        { adaptateurChiffrement, adaptateurEnvironnement, fabriqueSessionFCPlus },
-        code,
-        requete,
-        reponse,
-      );
+      const adaptateurs = {
+        adaptateurChiffrement,
+        adaptateurEnvironnement,
+        fabriqueSessionFCPlus,
+        journal,
+      };
+      connexionFCPlus(adaptateurs, code, requete, reponse);
     },
   );
 

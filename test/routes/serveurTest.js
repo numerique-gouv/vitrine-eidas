@@ -6,6 +6,7 @@ const serveurTest = () => {
   let adaptateurEnvironnement;
   let adaptateurFranceConnectPlus;
   let fabriqueSessionFCPlus;
+  let journal;
   let middleware;
 
   let serveur;
@@ -44,6 +45,10 @@ const serveurTest = () => {
       nouvelleSession: () => Promise.resolve({ enJSON: () => Promise.resolve({}) }),
     };
 
+    journal = {
+      consigne: () => {},
+    };
+
     middleware = new MiddlewareFantaisie({});
 
     serveur = OOTS_FRANCE.creeServeur({
@@ -51,6 +56,7 @@ const serveurTest = () => {
       adaptateurEnvironnement,
       adaptateurFranceConnectPlus,
       fabriqueSessionFCPlus,
+      journal,
       middleware,
     });
 
@@ -65,6 +71,7 @@ const serveurTest = () => {
     adaptateurFranceConnectPlus: () => adaptateurFranceConnectPlus,
     arrete,
     fabriqueSessionFCPlus: () => fabriqueSessionFCPlus,
+    journal: () => journal,
     initialise,
     middleware: () => middleware,
     port,
