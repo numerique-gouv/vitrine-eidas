@@ -12,6 +12,8 @@ const fabriqueSessionFCPlus = new FabriqueSessionFCPlus({
 });
 const middleware = new Middleware({ adaptateurChiffrement, adaptateurEnvironnement });
 
+journal.active();
+
 const serveur = SiteVitrine.creeServeur({
   adaptateurChiffrement,
   adaptateurEnvironnement,

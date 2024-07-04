@@ -1,5 +1,6 @@
-/* eslint-disable no-console */
-const consigne = console.log;
-/* eslint-enable no-console */
+const { enable, info } = require('diary');
 
-module.exports = { consigne };
+const active = () => enable('*');
+const consigne = info;
+
+module.exports = { active, consigne };
