@@ -10,6 +10,7 @@ const creeServeur = (config) => {
     adaptateurEnvironnement,
     adaptateurFranceConnectPlus,
     fabriqueSessionFCPlus,
+    journal,
     middleware,
   } = config;
   let serveur;
@@ -35,6 +36,7 @@ const creeServeur = (config) => {
     adaptateurEnvironnement,
     adaptateurFranceConnectPlus,
     fabriqueSessionFCPlus,
+    journal,
     middleware,
   }));
 

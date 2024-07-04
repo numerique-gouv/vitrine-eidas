@@ -1,7 +1,12 @@
 const { stockeDansCookieSession } = require('../routes/utils');
 
 const connexionFCPlus = (config, code, requete, reponse) => {
-  const { adaptateurChiffrement, adaptateurEnvironnement, fabriqueSessionFCPlus } = config;
+  const {
+    adaptateurChiffrement,
+    adaptateurEnvironnement,
+    fabriqueSessionFCPlus,
+    journal,
+  } = config;
 
   const secret = adaptateurEnvironnement.secretJetonSession();
 
@@ -13,8 +18,9 @@ const connexionFCPlus = (config, code, requete, reponse) => {
         return stockeDansCookieSession(infos, adaptateurChiffrement, requete);
       }))
     .then(() => reponse.render('redirectionNavigateur', { destination: '/' }))
-    .catch(() => {
+    .catch((e) => {
       requete.session.jeton = undefined;
+      journal.consigne(`Échec authentification (${e.message})`);
       reponse.render('redirectionNavigateur', { destination: '/auth/fcplus/destructionSession' });
     });
 };
