@@ -13,9 +13,9 @@ const connexionFCPlus = (config, code, requete, reponse) => {
         return stockeDansCookieSession(infos, adaptateurChiffrement, requete);
       }))
     .then(() => reponse.render('redirectionNavigateur', { destination: '/' }))
-    .catch((e) => {
+    .catch(() => {
       requete.session.jeton = undefined;
-      reponse.render('erreur', { descriptionErreur: `Échec authentification (${e.message})` });
+      reponse.render('redirectionNavigateur', { destination: '/auth/fcplus/destructionSession' });
     });
 };
 
