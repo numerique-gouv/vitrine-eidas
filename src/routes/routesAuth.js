@@ -71,7 +71,7 @@ const routesAuth = (config) => {
     deconnexionFCPlus(requete, reponse)
   ));
 
-  routes.get('/fcplus/destructionSession', (...args) => middleware.renseigneUtilisateurCourant(...args), (requete, reponse) => {
+  routes.get('/fcplus/destructionSession', (requete, reponse) => {
     destructionSessionFCPlus(
       {
         adaptateurChiffrement,

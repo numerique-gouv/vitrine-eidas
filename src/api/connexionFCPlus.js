@@ -11,7 +11,10 @@ const connexionFCPlus = (config, code, requete, reponse) => {
   const secret = adaptateurEnvironnement.secretJetonSession();
 
   return fabriqueSessionFCPlus.nouvelleSession(code)
-    .then((sessionFCPlus) => sessionFCPlus.enJSON())
+    .then((sessionFCPlus) => {
+      requete.session.jwtSessionFCPlus = sessionFCPlus.jwt;
+      return sessionFCPlus.enJSON();
+    })
     .then((infos) => adaptateurChiffrement.verifieJeton(requete.session.jeton, secret)
       .then(({ nonce }) => {
         if (infos.nonce !== nonce) { throw new Error('nonce invalide'); }

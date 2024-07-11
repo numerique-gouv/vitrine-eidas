@@ -2,7 +2,6 @@ const axios = require('axios');
 
 const { leveErreur } = require('./utils');
 const serveurTest = require('./serveurTest');
-const Utilisateur = require('../../src/modeles/utilisateur');
 
 describe('Le serveur des routes `/auth`', () => {
   const serveur = serveurTest();
@@ -141,20 +140,6 @@ describe('Le serveur des routes `/auth`', () => {
         .then((reponse) => expect(reponse.request.path).toBe('/'))
         .catch(leveErreur)
     ));
-  });
-
-  describe('sur GET /auth/fcplus/destructionSession', () => {
-    it("appelle le middleware pour renseigner les infos de l'utilisateur courant", () => {
-      serveur.middleware().reinitialise({
-        utilisateurCourant: new Utilisateur({ prenom: 'Jean', nomUsage: 'Max', jwtSessionFCPlus: 'abcdef' }),
-      });
-
-      serveur.adaptateurFranceConnectPlus().urlDestructionSession = () => Promise.resolve(`http://localhost:${port}`);
-
-      return axios.get(`http://localhost:${port}/auth/fcplus/destructionSession`)
-        .then((reponse) => expect(reponse.request.path).toContain('id_token_hint=abcdef'))
-        .catch(leveErreur);
-    });
   });
 
   describe('sur GET /auth/fcplus/creationSession', () => {

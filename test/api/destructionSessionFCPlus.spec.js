@@ -13,14 +13,14 @@ describe('Le requêteur de destruction de session FC+', () => {
     adaptateurChiffrement.cleHachage = () => '';
     adaptateurEnvironnement.urlRedirectionDeconnexion = () => '';
     adaptateurFranceConnectPlus.urlDestructionSession = () => Promise.resolve('');
-    requete = {};
+    requete = { session: {} };
     reponse.end = () => Promise.resolve();
     reponse.redirect = () => Promise.resolve();
   });
 
   describe('quand le JWT de session FC+ existe', () => {
     beforeEach(() => {
-      requete.utilisateurCourant = { jwtSessionFCPlus: '' };
+      requete.session.jwtSessionFCPlus = '12345';
     });
 
     it('redirige vers serveur FC+', () => {
@@ -36,13 +36,13 @@ describe('Le requêteur de destruction de session FC+', () => {
         }
       };
 
-      destructionSessionFCPlus(config, requete, reponse);
+      return destructionSessionFCPlus(config, requete, reponse);
     });
 
     it('récupère le JWT de session FC+ stocké dans la session locale', () => {
       expect.assertions(1);
 
-      requete.utilisateurCourant = { jwtSessionFCPlus: 'abcdef' };
+      requete.session.jwtSessionFCPlus = 'abcdef';
       reponse.redirect = (url) => {
         try {
           expect(url).toContain('id_token_hint=abcdef');
@@ -52,7 +52,7 @@ describe('Le requêteur de destruction de session FC+', () => {
         }
       };
 
-      destructionSessionFCPlus(config, requete, reponse);
+      return destructionSessionFCPlus(config, requete, reponse);
     });
 
     it('ajoute un état en paramètre de la requête', () => {
@@ -68,7 +68,7 @@ describe('Le requêteur de destruction de session FC+', () => {
         }
       };
 
-      destructionSessionFCPlus(config, requete, reponse);
+      return destructionSessionFCPlus(config, requete, reponse);
     });
 
     it("ajoute l'URL de redirection post-logout en paramètre de la requête", () => {
@@ -84,14 +84,14 @@ describe('Le requêteur de destruction de session FC+', () => {
         }
       };
 
-      destructionSessionFCPlus(config, requete, reponse);
+      return destructionSessionFCPlus(config, requete, reponse);
     });
   });
 
   describe('Quand le JWT de session est inexistant', () => {
     it('redirige vers `/auth/fcplus/deconnexion`', () => {
       expect.assertions(2);
-      expect(requete.utilisateurCourant).toBeUndefined();
+      expect(requete.session.jwtSessionFCPlus).toBeUndefined();
 
       reponse.redirect = (url) => {
         try {
@@ -102,7 +102,7 @@ describe('Le requêteur de destruction de session FC+', () => {
         }
       };
 
-      destructionSessionFCPlus(config, requete, reponse);
+      return destructionSessionFCPlus(config, requete, reponse);
     });
   });
 });

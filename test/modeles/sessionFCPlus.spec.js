@@ -79,7 +79,7 @@ describe('Une session FranceConnect+', () => {
         .then(() => expect(signatureVerifiee).toBe(true));
     });
 
-    it('ajoute le JWT de session aux infos utilisateur', () => {
+    it('ajoute les infos utilisateur au cookie de session', () => {
       adaptateurFranceConnectPlus.recupereInfosUtilisateurChiffrees = () => Promise.resolve('aaa');
       adaptateurChiffrement.dechiffreJWE = (jwe) => Promise.resolve(jwe);
       adaptateurChiffrement.verifieSignatureJWTDepuisJWKS = (jwt, url) => {

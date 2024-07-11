@@ -19,6 +19,7 @@ describe('Le requêteur de connexion FC+', () => {
     adaptateurChiffrement.verifieJeton = () => Promise.resolve({});
     adaptateurEnvironnement.secretJetonSession = () => '';
     fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve({
+      jwt: '',
       enJSON: () => Promise.resolve({}),
     });
     journal.consigne = () => {};
@@ -33,6 +34,18 @@ describe('Le requêteur de connexion FC+', () => {
     expect(requete.session.jeton).toBeUndefined();
     return connexionFCPlus(config, 'unCode', requete, reponse)
       .then(() => expect(requete.session.jeton).toBe('XXX'));
+  });
+
+  it('conserve le JWT de session FC+ dans le cookie de session', () => {
+    fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve({
+      jwt: 'abcdef',
+      enJSON: () => Promise.resolve({}),
+    });
+
+    expect(requete.session.jwtSessionFCPlus).toBeUndefined();
+
+    return connexionFCPlus(config, 'unCode', requete, reponse)
+      .then(() => expect(requete.session.jwtSessionFCPlus).toBe('abcdef'));
   });
 
   it('supprime le jeton déjà en session sur erreur récupération infos', () => {
