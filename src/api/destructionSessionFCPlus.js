@@ -5,10 +5,9 @@ const destructionSessionFCPlus = (config, requete, reponse) => {
     adaptateurFranceConnectPlus,
   } = config;
 
-  const { utilisateurCourant } = requete;
-  if (!utilisateurCourant) { return reponse.redirect('/auth/fcplus/deconnexion'); }
+  const { jwtSessionFCPlus } = requete.session;
+  if (!jwtSessionFCPlus) { return reponse.redirect('/auth/fcplus/deconnexion'); }
 
-  const { jwtSessionFCPlus } = utilisateurCourant;
   const etat = adaptateurChiffrement.cleHachage(`${Math.random()}`);
   const urlRedirectionDeconnexion = adaptateurEnvironnement.urlRedirectionDeconnexion();
 
