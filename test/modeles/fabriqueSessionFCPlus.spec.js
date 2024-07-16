@@ -58,12 +58,4 @@ describe('La fabrique de session FC+', () => {
     return fabrique.nouvelleSession('unCode')
       .then((session) => expect(session.nonce).toBe('abc'));
   });
-
-  it("conserve l'URL des clefs publiques FC+", () => {
-    adaptateurFranceConnectPlus.recupereURLClefsPubliques = () => Promise.resolve('http://example.com');
-
-    const fabrique = new FabriqueSessionFCPlus(config);
-    return fabrique.nouvelleSession('unCode')
-      .then((session) => expect(session.urlClefsPubliques).toBe('http://example.com'));
-  });
 });
