@@ -36,7 +36,6 @@ describe('Le middleware OOTS-France', () => {
 
   it("renseigne les infos de l'utilisateur courant dans la requête", (suite) => {
     adaptateurChiffrement.verifieJeton = () => Promise.resolve({
-      jwtSessionFCPlus: 'abcdef',
       prenom: 'Pierre',
       nomUsage: 'Jax',
     });
@@ -47,7 +46,6 @@ describe('Le middleware OOTS-France', () => {
     middleware.renseigneUtilisateurCourant(requete, null, () => {
       try {
         const utilisateur = requete.utilisateurCourant;
-        expect(utilisateur.jwtSessionFCPlus).toEqual('abcdef');
         expect(utilisateur.prenom).toEqual('Pierre');
         expect(utilisateur.nomUsage).toEqual('Jax');
         suite();

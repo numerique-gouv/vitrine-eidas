@@ -92,13 +92,12 @@ describe('Une session FranceConnect+', () => {
         }
       };
 
-      const session = nouvelleSession({ jwt: '999', urlClefsPubliques: 'http://example.com' });
+      const session = nouvelleSession({ urlClefsPubliques: 'http://example.com' });
 
       return session.enJSON()
         .then((json) => {
           expect(json).toHaveProperty('prenom', 'Anne');
           expect(json).toHaveProperty('nomUsage', 'Durand');
-          expect(json).toHaveProperty('jwtSessionFCPlus', '999');
         });
     });
 

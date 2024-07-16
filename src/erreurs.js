@@ -5,7 +5,6 @@ class ErreurEchecAuthentification extends Error {}
 class ErreurInstructionSOAPInconnue extends Error {}
 class ErreurJetonInvalide extends Error {}
 class ErreurReponseRequete extends Error {}
-class ErreurSessionFCPlusInexistante extends Error {}
 
 module.exports = {
   ErreurAbsenceReponseDestinataire,
@@ -15,5 +14,4 @@ module.exports = {
   ErreurInstructionSOAPInconnue,
   ErreurJetonInvalide,
   ErreurReponseRequete,
-  ErreurSessionFCPlusInexistante,
 };
