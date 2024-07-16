@@ -12,7 +12,6 @@ class SessionFCPlus {
     this.jetonAcces = undefined;
     this.jwt = undefined;
     this.nonce = undefined;
-    this.urlClefsPubliques = undefined;
   }
 
   enJSON() {
@@ -20,15 +19,11 @@ class SessionFCPlus {
       return Promise.reject(new Error(leveErreurParametreManquant('JWT non défini')));
     }
 
-    if (!this.urlClefsPubliques) {
-      return Promise.reject(new Error(leveErreurParametreManquant('URL clefs publiques non définie')));
-    }
-
-    return this.infosUtilisateurDechiffrees()
-      .then((jwtInfosUtilisateur) => this.adaptateurChiffrement.verifieSignatureJWTDepuisJWKS(
-        jwtInfosUtilisateur,
-        this.urlClefsPubliques,
-      ))
+    return Promise.all([
+      this.infosUtilisateurDechiffrees(),
+      this.adaptateurFranceConnectPlus.recupereURLClefsPubliques(),
+    ])
+      .then(([jwt, url]) => this.adaptateurChiffrement.verifieSignatureJWTDepuisJWKS(jwt, url))
       .then((infosDechiffrees) => ({
         prenom: infosDechiffrees.given_name,
         nomUsage: infosDechiffrees.family_name,

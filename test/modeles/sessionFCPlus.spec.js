@@ -10,6 +10,7 @@ describe('Une session FranceConnect+', () => {
     adaptateurChiffrement.dechiffreJWE = () => Promise.resolve('');
     adaptateurChiffrement.verifieSignatureJWTDepuisJWKS = () => Promise.resolve({});
     adaptateurFranceConnectPlus.recupereInfosUtilisateurChiffrees = () => Promise.resolve('');
+    adaptateurFranceConnectPlus.recupereURLClefsPubliques = () => Promise.resolve('');
   });
 
   const nouvelleSession = ({
@@ -81,6 +82,7 @@ describe('Une session FranceConnect+', () => {
 
     it('ajoute les infos utilisateur au cookie de session', () => {
       adaptateurFranceConnectPlus.recupereInfosUtilisateurChiffrees = () => Promise.resolve('aaa');
+      adaptateurFranceConnectPlus.recupereURLClefsPubliques = () => Promise.resolve('http://example.com');
       adaptateurChiffrement.dechiffreJWE = (jwe) => Promise.resolve(jwe);
       adaptateurChiffrement.verifieSignatureJWTDepuisJWKS = (jwt, url) => {
         try {
@@ -92,8 +94,7 @@ describe('Une session FranceConnect+', () => {
         }
       };
 
-      const session = nouvelleSession({ urlClefsPubliques: 'http://example.com' });
-
+      const session = nouvelleSession();
       return session.enJSON()
         .then((json) => {
           expect(json).toHaveProperty('prenom', 'Anne');
@@ -130,16 +131,6 @@ describe('Une session FranceConnect+', () => {
 
       return session.enJSON()
         .catch((e) => expect(e.message).toBe('JWT non défini. La session a-t-elle bien été instanciée depuis la fabrique ?'));
-    });
-
-    it("lève une erreur si l'URL des clefs publiques n'est pas définie", () => {
-      expect.assertions(2);
-
-      const session = nouvelleSession({ urlClefsPubliques: '' });
-      expect(session.urlClefsPubliques).toBeFalsy();
-
-      return session.enJSON()
-        .catch((e) => expect(e.message).toBe('URL clefs publiques non définie. La session a-t-elle bien été instanciée depuis la fabrique ?'));
     });
   });
 });
