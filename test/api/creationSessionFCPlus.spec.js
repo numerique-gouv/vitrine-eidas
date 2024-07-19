@@ -86,31 +86,14 @@ describe('Le requêteur de création de session FC+', () => {
     return creationSessionFCPlus(config, requete, reponse);
   });
 
-  it('génère un JWT à partir des valeurs générées pour `etat` et `nonce`', () => {
-    expect.assertions(2);
-
+  it('conserve les valeurs générées pour `etat` et `nonce` dans le cookie de session', () => {
     let nbAppelsCleHachage = 0;
     adaptateurChiffrement.cleHachage = () => { nbAppelsCleHachage += 1; return `12345-${nbAppelsCleHachage}`; };
 
-    adaptateurChiffrement.genereJeton = ({ etat, nonce }) => {
-      try {
-        expect(etat).toBe('12345-1');
-        expect(nonce).toBe('12345-2');
-        return Promise.resolve();
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    };
-
-    return creationSessionFCPlus(config, requete, reponse);
-  });
-
-  it('stocke le JWT généré dans le cookie de session', () => {
-    adaptateurChiffrement.genereJeton = () => Promise.resolve('XXX');
-
-    expect(requete.session.jeton).toBeUndefined();
+    expect(requete.session.etat).toBeUndefined();
+    expect(requete.session.nonce).toBeUndefined();
     return creationSessionFCPlus(config, requete, reponse)
-      .then(() => expect(requete.session.jeton).toBe('XXX'));
+      .then(() => expect(requete.session).toEqual({ etat: '12345-1', nonce: '12345-2' }));
   });
 
   describe('Si utilisation bridge eIDAS', () => {

@@ -15,19 +15,14 @@ class Middleware {
       .then(() => suite());
   }
 
-  verifieTamponUnique(requete, reponse, suite) {
-    const valide = (tampon) => {
-      if (tampon.etat !== requete.query.state) {
-        requete.session = null;
-        throw new Error('État invalide');
-      }
-    };
-
-    return this.adaptateurChiffrement.verifieJeton(requete.session.jeton, this.secret)
-      .then(valide)
-      .then(suite)
-      .catch(() => reponse.render('redirectionNavigateur', { destination: '/' }));
-  }
+  verifieTamponUnique = (requete, reponse, suite) => {
+    if (requete.session.etat !== requete.query.state) {
+      requete.session = null;
+      reponse.render('redirectionNavigateur', { destination: '/' });
+    } else {
+      suite();
+    }
+  };
 }
 
 module.exports = Middleware;
