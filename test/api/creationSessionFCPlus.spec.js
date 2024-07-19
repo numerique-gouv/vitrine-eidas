@@ -21,7 +21,6 @@ describe('Le requêteur de création de session FC+', () => {
 
   beforeEach(() => {
     adaptateurChiffrement.cleHachage = () => '';
-    adaptateurChiffrement.genereJeton = () => Promise.resolve();
     adaptateurEnvironnement.avecMock = () => false;
     adaptateurEnvironnement.identifiantClient = () => '';
     adaptateurEnvironnement.urlRedirectionConnexion = () => '';
