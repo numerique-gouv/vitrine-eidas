@@ -13,15 +13,17 @@ describe('Le requêteur de connexion FC+', () => {
   };
   const requete = {};
   const reponse = {};
+  const sessionFCPlus = {};
 
   beforeEach(() => {
     adaptateurChiffrement.genereJeton = () => Promise.resolve();
     adaptateurChiffrement.verifieJeton = () => Promise.resolve({});
     adaptateurEnvironnement.secretJetonSession = () => '';
-    fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve({
-      jwt: '',
-      enJSON: () => Promise.resolve({}),
-    });
+
+    sessionFCPlus.jwt = '';
+    sessionFCPlus.enJSON = () => Promise.resolve({});
+    fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve(sessionFCPlus);
+
     journal.consigne = () => {};
     requete.session = {};
     reponse.render = () => Promise.resolve();
@@ -37,11 +39,7 @@ describe('Le requêteur de connexion FC+', () => {
   });
 
   it('conserve le JWT de session FC+ dans le cookie de session', () => {
-    fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve({
-      jwt: 'abcdef',
-      enJSON: () => Promise.resolve({}),
-    });
-
+    sessionFCPlus.jwt = 'abcdef';
     expect(requete.session.jwtSessionFCPlus).toBeUndefined();
 
     return connexionFCPlus(config, 'unCode', requete, reponse)
@@ -49,9 +47,7 @@ describe('Le requêteur de connexion FC+', () => {
   });
 
   it('supprime le jeton déjà en session sur erreur récupération infos', () => {
-    fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve({
-      enJSON: () => Promise.reject(new Error('oups')),
-    });
+    sessionFCPlus.enJSON = () => Promise.reject(new Error('oups'));
     adaptateurChiffrement.genereJeton = () => Promise.resolve('abcdef');
 
     requete.session.jeton = 'unJeton';
@@ -64,9 +60,7 @@ describe('Le requêteur de connexion FC+', () => {
       adaptateurChiffrement.verifieJeton = () => Promise.resolve({ nonce: 'unNonce' });
 
       requete.session.jeton = { nonce: 'abcde' };
-      fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve({
-        enJSON: () => Promise.resolve({ nonce: 'oups' }),
-      });
+      sessionFCPlus.enJSON = () => Promise.resolve({ nonce: 'oups' });
     });
 
     it("journalise l'erreur", () => {
