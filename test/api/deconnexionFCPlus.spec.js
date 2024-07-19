@@ -11,7 +11,7 @@ describe('Le requêteur de déconnexion FC+', () => {
   });
 
   it('vide le cookie de session', () => {
-    requete.session.jeton = 'unJeton';
+    requete.session = { uneClef: 'une valeur' };
 
     deconnexionFCPlus(requete, reponse);
     expect(requete.session).toBe(null);
