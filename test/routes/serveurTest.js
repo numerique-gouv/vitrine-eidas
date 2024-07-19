@@ -19,8 +19,6 @@ const serveurTest = () => {
     adaptateurChiffrement = {
       cleHachage: () => '',
       dechiffreJWE: () => Promise.resolve(),
-      genereJeton: () => Promise.resolve(),
-      verifieJeton: () => Promise.resolve({}),
       verifieSignatureJWTDepuisJWKS: () => Promise.resolve({}),
     };
 

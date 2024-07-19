@@ -9,7 +9,6 @@ describe('Le middleware OOTS-France', () => {
 
   beforeEach(() => {
     adaptateurEnvironnement.secretJetonSession = () => '';
-    adaptateurChiffrement.verifieJeton = () => Promise.resolve();
 
     requete = { query: {}, session: { jeton: '' } };
     reponse.render = () => Promise.resolve();
