@@ -6,14 +6,15 @@ class Middleware {
     this.secret = config.adaptateurEnvironnement.secretJetonSession();
   }
 
-  renseigneUtilisateurCourant(requete, _reponse, suite) {
-    return this.adaptateurChiffrement.verifieJeton(requete.session.jeton, this.secret)
-      .then((infosUtilisateur) => {
-        requete.utilisateurCourant = new Utilisateur(infosUtilisateur);
-      })
-      .catch(() => { requete.utilisateurCourant = undefined; })
-      .then(() => suite());
-  }
+  renseigneUtilisateurCourant = (requete, _reponse, suite) => {
+    try {
+      requete.utilisateurCourant = new Utilisateur(requete.session.infosUtilisateur);
+    } catch {
+      requete.utilisateurCourant = undefined;
+    }
+
+    suite();
+  };
 
   verifieTamponUnique = (requete, reponse, suite) => {
     if (requete.session.etat !== requete.query.state) {

@@ -1,8 +1,5 @@
-const { stockeDansCookieSession } = require('../routes/utils');
-
 const connexionFCPlus = (config, code, requete, reponse) => {
   const {
-    adaptateurChiffrement,
     fabriqueSessionFCPlus,
     journal,
   } = config;
@@ -14,11 +11,11 @@ const connexionFCPlus = (config, code, requete, reponse) => {
     })
     .then((infos) => {
       if (infos.nonce !== requete.session.nonce) { throw new Error('nonce invalide'); }
-      return stockeDansCookieSession(infos, adaptateurChiffrement, requete);
+      requete.session.infosUtilisateur = infos;
     })
     .then(() => reponse.render('redirectionNavigateur', { destination: '/' }))
     .catch((e) => {
-      requete.session.jeton = undefined;
+      requete.session.infosUtilisateur = undefined;
       journal.consigne(`Échec authentification (${e.message})`);
       reponse.render('redirectionNavigateur', { destination: '/auth/fcplus/destructionSession' });
     });
