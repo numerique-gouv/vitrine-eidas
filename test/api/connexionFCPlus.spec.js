@@ -14,8 +14,6 @@ describe('Le requêteur de connexion FC+', () => {
   const sessionFCPlus = {};
 
   beforeEach(() => {
-    adaptateurChiffrement.genereJeton = () => Promise.resolve();
-
     sessionFCPlus.jwt = '';
     sessionFCPlus.enJSON = () => Promise.resolve({});
     fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve(sessionFCPlus);
@@ -27,11 +25,11 @@ describe('Le requêteur de connexion FC+', () => {
   });
 
   it('conserve les infos utilisateurs dans un cookie de session', () => {
-    adaptateurChiffrement.genereJeton = () => Promise.resolve('XXX');
+    sessionFCPlus.enJSON = () => Promise.resolve({ uneClef: 'une valeur' });
 
-    expect(requete.session.jeton).toBeUndefined();
+    expect(requete.session.infosUtilisateur).toBeUndefined();
     return connexionFCPlus(config, 'unCode', requete, reponse)
-      .then(() => expect(requete.session.jeton).toBe('XXX'));
+      .then(() => expect(requete.session.infosUtilisateur).toEqual({ uneClef: 'une valeur' }));
   });
 
   it('conserve le JWT de session FC+ dans le cookie de session', () => {
@@ -42,13 +40,12 @@ describe('Le requêteur de connexion FC+', () => {
       .then(() => expect(requete.session.jwtSessionFCPlus).toBe('abcdef'));
   });
 
-  it('supprime le jeton déjà en session sur erreur récupération infos', () => {
+  it('supprime les infos utilisateur déjà en session sur erreur récupération des infos', () => {
     sessionFCPlus.enJSON = () => Promise.reject(new Error('oups'));
-    adaptateurChiffrement.genereJeton = () => Promise.resolve('abcdef');
 
-    requete.session.jeton = 'unJeton';
+    requete.session.infosUtilisateur = { uneClef: 'une valeur' };
     return connexionFCPlus(config, 'unCode', requete, reponse)
-      .then(() => expect(requete.session.jeton).toBeUndefined());
+      .then(() => expect(requete.session.infosUtilisateur).toBeUndefined());
   });
 
   describe('quand nonce retourné diffère du nonce en session', () => {

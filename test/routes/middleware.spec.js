@@ -1,4 +1,3 @@
-const { ErreurJetonInvalide } = require('../../src/erreurs');
 const Middleware = require('../../src/routes/middleware');
 
 describe('Le middleware OOTS-France', () => {
@@ -16,29 +15,8 @@ describe('Le middleware OOTS-France', () => {
     reponse.render = () => Promise.resolve();
   });
 
-  it('vérifie le jeton stocké en session', (suite) => {
-    requete.session.jeton = 'jeton';
-    adaptateurEnvironnement.secretJetonSession = () => 'secret';
-    adaptateurChiffrement.verifieJeton = (jeton, secret) => {
-      try {
-        expect(jeton).toBe('jeton');
-        expect(secret).toBe('secret');
-
-        return Promise.resolve();
-      } catch (e) { return Promise.reject(e); }
-    };
-
-    const middleware = new Middleware(config);
-
-    middleware.renseigneUtilisateurCourant(requete, null, suite)
-      .catch(suite);
-  });
-
   it("renseigne les infos de l'utilisateur courant dans la requête", (suite) => {
-    adaptateurChiffrement.verifieJeton = () => Promise.resolve({
-      prenom: 'Pierre',
-      nomUsage: 'Jax',
-    });
+    requete.session.infosUtilisateur = { prenom: 'Pierre', nomUsage: 'Jax' };
 
     const middleware = new Middleware(config);
     expect(requete.utilisateurCourant).toBeUndefined();
@@ -50,19 +28,19 @@ describe('Le middleware OOTS-France', () => {
         expect(utilisateur.nomUsage).toEqual('Jax');
         suite();
       } catch (e) { suite(e); }
-    })
-      .catch(suite);
+    });
   });
 
-  it("supprime les infos de l'utilisateur courant si le jeton est invalide", (suite) => {
-    adaptateurChiffrement.verifieJeton = () => Promise.reject(new ErreurJetonInvalide('oups'));
+  it("supprime les infos de l'utilisateur courant si les données en session sont invalides", (suite) => {
+    expect(requete.session.infosUtilisateur).toBeUndefined();
 
     const middleware = new Middleware(config);
     middleware.renseigneUtilisateurCourant(requete, null, () => {
-      expect(requete.utilisateurCourant).toBeUndefined();
-      suite();
-    })
-      .catch(suite);
+      try {
+        expect(requete.utilisateurCourant).toBeUndefined();
+        suite();
+      } catch (e) { suite(e); }
+    });
   });
 
   describe('sur demande de vérification du tampon unique', () => {
