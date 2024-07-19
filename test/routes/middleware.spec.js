@@ -1,6 +1,6 @@
 const Middleware = require('../../src/routes/middleware');
 
-describe('Le middleware OOTS-France', () => {
+describe('Le middleware', () => {
   const reponse = {};
   let requete;
 
