@@ -67,54 +67,36 @@ describe('Le middleware OOTS-France', () => {
 
   describe('sur demande de vérification du tampon unique', () => {
     it('assure que tampon communiqué identique à celui stocké en session avant de passer à la suite', (suite) => {
-      expect.assertions(1);
-
-      adaptateurChiffrement.verifieJeton = (jeton) => {
-        try {
-          expect(jeton).toBe('XXX');
-          return Promise.resolve({ etat: '12345' });
-        } catch (e) {
-          return Promise.reject(e);
-        }
-      };
-
-      requete.session.jeton = 'XXX';
+      requete.session.etat = '12345';
       requete.query.state = '12345';
       const middleware = new Middleware(config);
 
-      middleware.verifieTamponUnique(requete, reponse, suite)
-        .catch(suite);
+      middleware.verifieTamponUnique(requete, reponse, suite);
     });
 
-    it('redirige vers page accueil depuis navigateur si tampon communiqué différent', () => {
-      reponse.render = (_nomPageRedirection, { destination }) => {
-        try {
-          expect(destination).toBe('/');
-          return Promise.resolve();
-        } catch (e) {
-          return Promise.reject(e);
-        }
-      };
+    describe('quand tampon communiqué différent', () => {
+      beforeEach(() => {
+        requete.session.etat = '12345';
+        requete.query.state = 'oups';
+      });
 
-      adaptateurChiffrement.verifieJeton = () => Promise.resolve({ etat: 'oups' });
-      requete.query.state = '12345';
-      const middleware = new Middleware(config);
+      it('redirige vers page accueil depuis navigateur', () => {
+        expect.assertions(1);
 
-      return middleware.verifieTamponUnique(
-        requete,
-        reponse,
-        () => Promise.reject(new Error("Tampon invalide – on n'aurait pas dû passer à la suite")),
-      );
-    });
+        reponse.render = (_nomPageRedirection, { destination }) => expect(destination).toBe('/');
 
-    it('supprime cookie session si tampon communiqué différent', () => {
-      adaptateurChiffrement.verifieJeton = () => Promise.resolve({ etat: 'oups' });
-      requete.query.state = '12345';
-      const middleware = new Middleware(config);
+        const middleware = new Middleware(config);
+        middleware.verifieTamponUnique(requete, reponse, () => { throw new Error("Tampon invalide – on n'aurait pas dû passer à la suite"); });
+      });
 
-      requete.session.jeton = 'XXX';
-      return middleware.verifieTamponUnique(requete, reponse)
-        .then(() => expect(requete.session).toBe(null));
+      it('supprime cookie session', () => {
+        expect.assertions(1);
+
+        reponse.render = () => { expect(requete.session).toBe(null); };
+
+        const middleware = new Middleware(config);
+        middleware.verifieTamponUnique(requete, reponse);
+      });
     });
   });
 });

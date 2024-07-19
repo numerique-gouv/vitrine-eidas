@@ -2,12 +2,10 @@ const connexionFCPlus = require('../../src/api/connexionFCPlus');
 
 describe('Le requêteur de connexion FC+', () => {
   const adaptateurChiffrement = {};
-  const adaptateurEnvironnement = {};
   const fabriqueSessionFCPlus = {};
   const journal = {};
   const config = {
     adaptateurChiffrement,
-    adaptateurEnvironnement,
     fabriqueSessionFCPlus,
     journal,
   };
@@ -17,8 +15,6 @@ describe('Le requêteur de connexion FC+', () => {
 
   beforeEach(() => {
     adaptateurChiffrement.genereJeton = () => Promise.resolve();
-    adaptateurChiffrement.verifieJeton = () => Promise.resolve({});
-    adaptateurEnvironnement.secretJetonSession = () => '';
 
     sessionFCPlus.jwt = '';
     sessionFCPlus.enJSON = () => Promise.resolve({});
@@ -57,9 +53,7 @@ describe('Le requêteur de connexion FC+', () => {
 
   describe('quand nonce retourné diffère du nonce en session', () => {
     beforeEach(() => {
-      adaptateurChiffrement.verifieJeton = () => Promise.resolve({ nonce: 'unNonce' });
-
-      requete.session.jeton = { nonce: 'abcde' };
+      requete.session.nonce = 'abcde';
       sessionFCPlus.enJSON = () => Promise.resolve({ nonce: 'oups' });
     });
 

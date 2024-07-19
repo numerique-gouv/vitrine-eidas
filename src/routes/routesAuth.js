@@ -59,7 +59,6 @@ const routesAuth = (config) => {
       const { code } = requete.query;
       const adaptateurs = {
         adaptateurChiffrement,
-        adaptateurEnvironnement,
         fabriqueSessionFCPlus,
         journal,
       };
