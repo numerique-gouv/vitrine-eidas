@@ -1,15 +1,10 @@
 const Middleware = require('../../src/routes/middleware');
 
 describe('Le middleware OOTS-France', () => {
-  const adaptateurChiffrement = {};
-  const adaptateurEnvironnement = {};
-  const config = { adaptateurChiffrement, adaptateurEnvironnement };
   const reponse = {};
   let requete;
 
   beforeEach(() => {
-    adaptateurEnvironnement.secretJetonSession = () => '';
-
     requete = { query: {}, session: { jeton: '' } };
     reponse.render = () => Promise.resolve();
   });
@@ -17,7 +12,7 @@ describe('Le middleware OOTS-France', () => {
   it("renseigne les infos de l'utilisateur courant dans la requête", (suite) => {
     requete.session.infosUtilisateur = { prenom: 'Pierre', nomUsage: 'Jax' };
 
-    const middleware = new Middleware(config);
+    const middleware = new Middleware();
     expect(requete.utilisateurCourant).toBeUndefined();
 
     middleware.renseigneUtilisateurCourant(requete, null, () => {
@@ -33,7 +28,7 @@ describe('Le middleware OOTS-France', () => {
   it("supprime les infos de l'utilisateur courant si les données en session sont invalides", (suite) => {
     expect(requete.session.infosUtilisateur).toBeUndefined();
 
-    const middleware = new Middleware(config);
+    const middleware = new Middleware();
     middleware.renseigneUtilisateurCourant(requete, null, () => {
       try {
         expect(requete.utilisateurCourant).toBeUndefined();
@@ -46,7 +41,7 @@ describe('Le middleware OOTS-France', () => {
     it('assure que tampon communiqué identique à celui stocké en session avant de passer à la suite', (suite) => {
       requete.session.etat = '12345';
       requete.query.state = '12345';
-      const middleware = new Middleware(config);
+      const middleware = new Middleware();
 
       middleware.verifieTamponUnique(requete, reponse, suite);
     });
@@ -62,7 +57,7 @@ describe('Le middleware OOTS-France', () => {
 
         reponse.render = (_nomPageRedirection, { destination }) => expect(destination).toBe('/');
 
-        const middleware = new Middleware(config);
+        const middleware = new Middleware();
         middleware.verifieTamponUnique(requete, reponse, () => { throw new Error("Tampon invalide – on n'aurait pas dû passer à la suite"); });
       });
 
@@ -71,7 +66,7 @@ describe('Le middleware OOTS-France', () => {
 
         reponse.render = () => { expect(requete.session).toBe(null); };
 
-        const middleware = new Middleware(config);
+        const middleware = new Middleware();
         middleware.verifieTamponUnique(requete, reponse);
       });
     });
