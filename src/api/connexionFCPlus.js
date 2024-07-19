@@ -1,8 +1,6 @@
-const connexionFCPlus = (config, code, requete, reponse) => {
-  const {
-    fabriqueSessionFCPlus,
-    journal,
-  } = config;
+const connexionFCPlus = (config, requete, reponse) => {
+  const { fabriqueSessionFCPlus, journal } = config;
+  const { code } = requete.query;
 
   return fabriqueSessionFCPlus.nouvelleSession(code)
     .then((sessionFCPlus) => {
