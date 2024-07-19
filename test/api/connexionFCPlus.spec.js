@@ -19,6 +19,7 @@ describe('Le requêteur de connexion FC+', () => {
     fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve(sessionFCPlus);
 
     journal.consigne = () => {};
+    requete.query = { code: 'unCode' };
     requete.session = {};
     reponse.render = () => Promise.resolve();
     reponse.status = () => reponse;
@@ -28,7 +29,7 @@ describe('Le requêteur de connexion FC+', () => {
     sessionFCPlus.enJSON = () => Promise.resolve({ uneClef: 'une valeur' });
 
     expect(requete.session.infosUtilisateur).toBeUndefined();
-    return connexionFCPlus(config, 'unCode', requete, reponse)
+    return connexionFCPlus(config, requete, reponse)
       .then(() => expect(requete.session.infosUtilisateur).toEqual({ uneClef: 'une valeur' }));
   });
 
@@ -36,7 +37,7 @@ describe('Le requêteur de connexion FC+', () => {
     sessionFCPlus.jwt = 'abcdef';
     expect(requete.session.jwtSessionFCPlus).toBeUndefined();
 
-    return connexionFCPlus(config, 'unCode', requete, reponse)
+    return connexionFCPlus(config, requete, reponse)
       .then(() => expect(requete.session.jwtSessionFCPlus).toBe('abcdef'));
   });
 
@@ -44,7 +45,7 @@ describe('Le requêteur de connexion FC+', () => {
     sessionFCPlus.enJSON = () => Promise.reject(new Error('oups'));
 
     requete.session.infosUtilisateur = { uneClef: 'une valeur' };
-    return connexionFCPlus(config, 'unCode', requete, reponse)
+    return connexionFCPlus(config, requete, reponse)
       .then(() => expect(requete.session.infosUtilisateur).toBeUndefined());
   });
 
@@ -59,7 +60,7 @@ describe('Le requêteur de connexion FC+', () => {
 
       journal.consigne = (entree) => { expect(entree).toBe('Échec authentification (nonce invalide)'); };
 
-      return connexionFCPlus(config, 'unCode', requete, reponse);
+      return connexionFCPlus(config, requete, reponse);
     });
 
     it('redirige vers la destruction de session FC+', () => {
@@ -75,7 +76,7 @@ describe('Le requêteur de connexion FC+', () => {
         }
       };
 
-      return connexionFCPlus(config, 'unCode', requete, reponse);
+      return connexionFCPlus(config, requete, reponse);
     });
   });
 });

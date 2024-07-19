@@ -56,12 +56,11 @@ const routesAuth = (config) => {
     '/fcplus/connexion_apres_redirection',
     (...args) => middleware.verifieTamponUnique(...args),
     (requete, reponse) => {
-      const { code } = requete.query;
       const adaptateurs = {
         fabriqueSessionFCPlus,
         journal,
       };
-      connexionFCPlus(adaptateurs, code, requete, reponse);
+      connexionFCPlus(adaptateurs, requete, reponse);
     },
   );
 
