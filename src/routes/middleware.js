@@ -1,11 +1,6 @@
 const Utilisateur = require('../modeles/utilisateur');
 
 class Middleware {
-  constructor(config) {
-    this.adaptateurChiffrement = config.adaptateurChiffrement;
-    this.secret = config.adaptateurEnvironnement.secretJetonSession();
-  }
-
   renseigneUtilisateurCourant = (requete, _reponse, suite) => {
     try {
       requete.utilisateurCourant = new Utilisateur(requete.session.infosUtilisateur);

@@ -10,7 +10,7 @@ const fabriqueSessionFCPlus = new FabriqueSessionFCPlus({
   adaptateurChiffrement,
   adaptateurFranceConnectPlus,
 });
-const middleware = new Middleware({ adaptateurChiffrement, adaptateurEnvironnement });
+const middleware = new Middleware();
 
 journal.active();
 
