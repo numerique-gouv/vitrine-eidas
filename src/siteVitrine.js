@@ -40,7 +40,7 @@ const creeServeur = (config) => {
     middleware,
   }));
 
-  app.use('/', routesBase({ middleware }));
+  app.use('/', routesBase({ adaptateurEnvironnement, middleware }));
 
   const arreteEcoute = (suite) => serveur.close(suite);
 

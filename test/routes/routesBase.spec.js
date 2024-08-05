@@ -24,21 +24,41 @@ describe('Le serveur des routes `/`', () => {
         })
         .catch(leveErreur)));
 
-    it("affiche prénom et nom de l'utilisateur courant s'il existe", () => {
-      serveur.middleware().reinitialise({
+    describe('si utilisateur courant existant', () => {
+      beforeEach(() => serveur.middleware().reinitialise({
         utilisateurCourant: new Utilisateur({
           jwtSessionFCPlus: 'abcdef',
           prenom: 'Sandra',
           nomUsage: 'Nicouette',
         }),
+      }));
+
+      it('affiche prénom et nom utilisateur courant', () => (
+        axios.get(`http://localhost:${port}/`)
+          .then((reponse) => {
+            expect(reponse.status).toBe(200);
+            expect(reponse.data).toContain('Sandra Nicouette');
+          })
+          .catch(leveErreur)));
+
+      it('affiche un lien vers OOTS', () => {
+        serveur.adaptateurEnvironnement().urlBaseOOTSFrance = () => 'http://example.com';
+        return axios.get(`http://localhost:${port}/`)
+          .then((reponse) => {
+            expect(reponse.data).toMatch(/<a href="http:\/\/example\.com.*">/);
+          })
+          .catch(leveErreur);
       });
 
-      return axios.get(`http://localhost:${port}/`)
-        .then((reponse) => {
-          expect(reponse.status).toBe(200);
-          expect(reponse.data).toContain('Sandra Nicouette');
-        })
-        .catch(leveErreur);
+      it("n'affiche pas le lien vers OOTS si feature flip désactivé", () => {
+        serveur.adaptateurEnvironnement().urlBaseOOTSFrance = () => 'http://example.com';
+        serveur.adaptateurEnvironnement().avecOOTS = () => false;
+        return axios.get(`http://localhost:${port}/`)
+          .then((reponse) => {
+            expect(reponse.data).not.toMatch(/<a href="http:\/\/example\.com.*">/);
+          })
+          .catch(leveErreur);
+      });
     });
   });
 });
