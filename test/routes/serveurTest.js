@@ -25,8 +25,10 @@ const serveurTest = () => {
     adaptateurEnvironnement = {
       avecEnvoiCookieSurHTTP: () => true,
       avecMock: () => true,
+      avecOOTS: () => true,
       identifiantClient: () => '',
       secretJetonSession: () => 'secret',
+      urlBaseOOTSFrance: () => '',
       urlRedirectionConnexion: () => '',
       urlRedirectionDeconnexion: () => '',
     };

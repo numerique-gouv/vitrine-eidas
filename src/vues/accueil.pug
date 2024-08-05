@@ -14,6 +14,11 @@ block bandeau
 block page
   if infosUtilisateur
     p Félicitations #{infosUtilisateur.afficheToi()}, vous avez réussi à vous authentifier avec eIDAS !
+
+    if urlOOTS
+      a(href = urlOOTS) Récupérer un document par OOTS
+      br
+
     a(href = '/auth/fcplus/destructionSession') Déconnexion
   else
     div
