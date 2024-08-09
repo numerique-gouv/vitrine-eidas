@@ -13,7 +13,7 @@ const routesBase = (config) => {
     (...args) => middleware.renseigneUtilisateurCourant(...args),
     (requete, reponse) => {
       const infosUtilisateur = requete.utilisateurCourant;
-      const urlOOTSRequete = `${adaptateurEnvironnement.urlBaseOOTSFrance()}/requete/pieceJustificative?nomDestinataire=AP_FR_01&codeDemarche=00&idTypeJustificatif=12345`;
+      const urlOOTSRequete = `${adaptateurEnvironnement.urlBaseOOTSFrance()}/requete/pieceJustificative?codeDemarche=00&&codePays=FR`;
       const urlOOTS = adaptateurEnvironnement.avecOOTS() && urlOOTSRequete;
       reponse.render('accueil', { infosUtilisateur, urlOOTS });
     },
