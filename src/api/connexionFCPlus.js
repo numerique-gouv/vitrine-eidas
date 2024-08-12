@@ -5,6 +5,7 @@ const connexionFCPlus = (config, requete, reponse) => {
   return fabriqueSessionFCPlus.nouvelleSession(code)
     .then((sessionFCPlus) => {
       requete.session.jwtSessionFCPlus = sessionFCPlus.jwt;
+      requete.session.jetonAcces = sessionFCPlus.jetonAcces;
       return sessionFCPlus.enJSON();
     })
     .then(({ nonce, ...infosUtilisateur }) => {

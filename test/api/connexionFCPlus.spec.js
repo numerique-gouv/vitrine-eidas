@@ -14,6 +14,7 @@ describe('Le requêteur de connexion FC+', () => {
   const sessionFCPlus = {};
 
   beforeEach(() => {
+    sessionFCPlus.jetonAcces = '';
     sessionFCPlus.jwt = '';
     sessionFCPlus.enJSON = () => Promise.resolve({});
     fabriqueSessionFCPlus.nouvelleSession = () => Promise.resolve(sessionFCPlus);
@@ -39,6 +40,14 @@ describe('Le requêteur de connexion FC+', () => {
 
     return connexionFCPlus(config, requete, reponse)
       .then(() => expect(requete.session.jwtSessionFCPlus).toBe('abcdef'));
+  });
+
+  it("conserve le jeton d'accès dans le cookie de session", () => {
+    sessionFCPlus.jetonAcces = 'abcdef';
+    expect(requete.session.jetonAcces).toBeUndefined();
+
+    return connexionFCPlus(config, requete, reponse)
+      .then(() => expect(requete.session.jetonAcces).toBe('abcdef'));
   });
 
   it('supprime les infos utilisateur déjà en session sur erreur récupération des infos', () => {
