@@ -1,5 +1,7 @@
 const express = require('express');
 
+const urlOOTS = require('../api/urlOOTS');
+
 const routesBase = (config) => {
   const {
     adaptateurEnvironnement,
@@ -13,9 +15,10 @@ const routesBase = (config) => {
     (...args) => middleware.renseigneUtilisateurCourant(...args),
     (requete, reponse) => {
       const infosUtilisateur = requete.utilisateurCourant;
-      const urlOOTSRequete = `${adaptateurEnvironnement.urlBaseOOTSFrance()}/requete/pieceJustificative?codeDemarche=00&&codePays=FR`;
-      const urlOOTS = adaptateurEnvironnement.avecOOTS() && urlOOTSRequete;
-      reponse.render('accueil', { infosUtilisateur, urlOOTS });
+      reponse.render('accueil', {
+        infosUtilisateur,
+        urlOOTS: urlOOTS(adaptateurEnvironnement),
+      });
     },
   );
 
