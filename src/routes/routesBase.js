@@ -17,7 +17,7 @@ const routesBase = (config) => {
       const infosUtilisateur = requete.utilisateurCourant;
       reponse.render('accueil', {
         infosUtilisateur,
-        urlOOTS: urlOOTS(adaptateurEnvironnement),
+        urlOOTS: urlOOTS(adaptateurEnvironnement, requete),
       });
     },
   );
