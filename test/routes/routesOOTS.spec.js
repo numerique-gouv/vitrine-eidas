@@ -24,5 +24,16 @@ describe('le serveur des routes `/oots/document`', () => {
         })
         .catch(leveErreur);
     });
+
+    it('lève une erreur 501 (not implemented) si la fonctionnalité est désactivée', () => {
+      expect.assertions(2);
+      serveur.adaptateurEnvironnement().avecOOTS = () => false;
+
+      return axios.get(`http://localhost:${port}/oots/document`)
+        .catch(({ response }) => {
+          expect(response.status).toEqual(501);
+          expect(response.data).toEqual('Not Implemented Yet!');
+        });
+    });
   });
 });

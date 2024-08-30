@@ -7,7 +7,11 @@ const routesOOTS = (config) => {
   const routes = express.Router();
 
   routes.get('/document', (requete, reponse) => {
-    reponse.render('redirectionNavigateur', { destination: urlOOTS(adaptateurEnvironnement, requete) });
+    if (adaptateurEnvironnement.avecOOTS()) {
+      reponse.render('redirectionNavigateur', { destination: urlOOTS(adaptateurEnvironnement, requete) });
+    } else {
+      reponse.status(501).send('Not Implemented Yet!');
+    }
   });
 
   return routes;
