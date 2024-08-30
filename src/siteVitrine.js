@@ -3,6 +3,7 @@ const express = require('express');
 
 const routesAuth = require('./routes/routesAuth');
 const routesBase = require('./routes/routesBase');
+const routesOOTS = require('./routes/routesOOTS');
 
 const creeServeur = (config) => {
   const {
@@ -39,6 +40,8 @@ const creeServeur = (config) => {
     journal,
     middleware,
   }));
+
+  app.use('/oots', routesOOTS({ adaptateurEnvironnement }));
 
   app.use('/', routesBase({ adaptateurEnvironnement, middleware }));
 
