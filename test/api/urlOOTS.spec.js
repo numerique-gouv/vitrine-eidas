@@ -17,13 +17,6 @@ describe("Le constructeur de l'URL de requête OOTS-France", () => {
     expect(url).toMatch(/^http:\/\/example\.com.*/);
   });
 
-  it('retourne `false` si feature flip désactivé', () => {
-    adaptateurEnvironnement.avecOOTS = () => false;
-    const url = urlOOTS(adaptateurEnvironnement, requete);
-
-    expect(url).toBe(false);
-  });
-
   it('injecte jeton accès conservé dans cookie session', () => {
     requete.session.jetonAcces = 'abcdef';
     const url = urlOOTS(adaptateurEnvironnement, requete);

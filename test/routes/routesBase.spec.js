@@ -41,15 +41,6 @@ describe('Le serveur des routes `/`', () => {
           })
           .catch(leveErreur)));
 
-      it('affiche un lien vers OOTS', () => {
-        serveur.adaptateurEnvironnement().urlBaseOOTSFrance = () => 'http://example.com';
-        return axios.get(`http://localhost:${port}/`)
-          .then((reponse) => {
-            expect(reponse.data).toMatch(/<a href="http:\/\/example\.com.*">/);
-          })
-          .catch(leveErreur);
-      });
-
       it("n'affiche pas le lien vers OOTS si feature flip désactivé", () => {
         serveur.adaptateurEnvironnement().urlBaseOOTSFrance = () => 'http://example.com';
         serveur.adaptateurEnvironnement().avecOOTS = () => false;

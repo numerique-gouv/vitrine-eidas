@@ -1,7 +1,5 @@
 const express = require('express');
 
-const urlOOTS = require('../api/urlOOTS');
-
 const routesBase = (config) => {
   const {
     adaptateurEnvironnement,
@@ -17,7 +15,7 @@ const routesBase = (config) => {
       const infosUtilisateur = requete.utilisateurCourant;
       reponse.render('accueil', {
         infosUtilisateur,
-        urlOOTS: urlOOTS(adaptateurEnvironnement, requete),
+        avecOOTS: adaptateurEnvironnement.avecOOTS(),
       });
     },
   );
