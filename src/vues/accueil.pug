@@ -1,6 +1,5 @@
 extends base
 
-
 block styles
   link(rel='stylesheet', href='/statique/assets/styles/accueil.css')
   link(rel='preload', href='/statique/assets/images/bouton_survol_eIDAS.svg' as='image')
@@ -13,16 +12,13 @@ block bandeau
     .image-site-vitrine
 
 block page
-  - var statutEnCours = (statut === 'enCours')
-  - var statutInitial = (statut === 'initial')
-
   if infosUtilisateur
     p Félicitations #{infosUtilisateur.afficheToi()}, vous avez réussi à vous authentifier avec eIDAS !
 
     if avecOOTS
-      if statutInitial
+      if statut.estInitial()
         a(href = '/oots/document') Récupérer un document par OOTS
-      if statutEnCours
+      if statut.estEnCours()
         p Document en cours de récupération
       br
 
