@@ -15,6 +15,19 @@ describe('le serveur des routes `/oots/document`', () => {
   afterEach((suite) => serveur.arrete(suite));
 
   describe('sur GET /oots/document', () => {
+    it('démarre le processus de récupération du document', () => {
+      let depotDonneesAppele = false;
+
+      serveur.depotDonnees().demarreRecuperationDocument = () => {
+        depotDonneesAppele = true;
+        return Promise.resolve();
+      };
+
+      return axios.get(`http://localhost:${port}/oots/document`)
+        .then(() => expect(depotDonneesAppele).toBe(true))
+        .catch(leveErreur);
+    });
+
     it('redirige vers OOTS', () => {
       serveur.adaptateurEnvironnement().urlBaseOOTSFrance = () => 'http://example.com';
 

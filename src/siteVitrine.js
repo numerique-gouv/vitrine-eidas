@@ -10,6 +10,7 @@ const creeServeur = (config) => {
     adaptateurChiffrement,
     adaptateurEnvironnement,
     adaptateurFranceConnectPlus,
+    depotDonnees,
     fabriqueSessionFCPlus,
     journal,
     middleware,
@@ -41,7 +42,7 @@ const creeServeur = (config) => {
     middleware,
   }));
 
-  app.use('/oots', routesOOTS({ adaptateurEnvironnement }));
+  app.use('/oots', routesOOTS({ adaptateurEnvironnement, depotDonnees }));
 
   app.use('/', routesBase({ adaptateurEnvironnement, middleware }));
 

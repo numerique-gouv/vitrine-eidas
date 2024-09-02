@@ -5,6 +5,7 @@ const serveurTest = () => {
   let adaptateurChiffrement;
   let adaptateurEnvironnement;
   let adaptateurFranceConnectPlus;
+  let depotDonnees;
   let fabriqueSessionFCPlus;
   let journal;
   let middleware;
@@ -41,6 +42,10 @@ const serveurTest = () => {
       urlDestructionSession: () => Promise.resolve(''),
     };
 
+    depotDonnees = {
+      demarreRecuperationDocument: () => Promise.resolve(),
+    };
+
     fabriqueSessionFCPlus = {
       nouvelleSession: () => Promise.resolve({ enJSON: () => Promise.resolve({}) }),
     };
@@ -55,6 +60,7 @@ const serveurTest = () => {
       adaptateurChiffrement,
       adaptateurEnvironnement,
       adaptateurFranceConnectPlus,
+      depotDonnees,
       fabriqueSessionFCPlus,
       journal,
       middleware,
@@ -70,6 +76,7 @@ const serveurTest = () => {
     adaptateurEnvironnement: () => adaptateurEnvironnement,
     adaptateurFranceConnectPlus: () => adaptateurFranceConnectPlus,
     arrete,
+    depotDonnees: () => depotDonnees,
     fabriqueSessionFCPlus: () => fabriqueSessionFCPlus,
     journal: () => journal,
     initialise,
