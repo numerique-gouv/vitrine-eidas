@@ -44,7 +44,7 @@ const creeServeur = (config) => {
 
   app.use('/oots', routesOOTS({ adaptateurEnvironnement, depotDonnees }));
 
-  app.use('/', routesBase({ adaptateurEnvironnement, middleware }));
+  app.use('/', routesBase({ adaptateurEnvironnement, depotDonnees, middleware }));
 
   const arreteEcoute = (suite) => serveur.close(suite);
 

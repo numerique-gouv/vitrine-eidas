@@ -1,10 +1,12 @@
 const STATUTS = {
   STATUT_EN_COURS: 'enCours',
+  STATUT_INITIAL: 'initial',
 };
 
 class DepotDonnees {
   constructor(donnees = {}) {
     this.donnees = donnees;
+    this.donnees.statutRecuperationDocument ||= STATUTS.STATUT_INITIAL;
   }
 
   demarreRecuperationDocument() {

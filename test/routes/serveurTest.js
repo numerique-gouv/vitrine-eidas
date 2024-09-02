@@ -1,5 +1,6 @@
-const OOTS_FRANCE = require('../../src/siteVitrine');
 const MiddlewareFantaisie = require('../mocks/middleware');
+const DepotDonnees = require('../../src/depotDonnees');
+const OOTS_FRANCE = require('../../src/siteVitrine');
 
 const serveurTest = () => {
   let adaptateurChiffrement;
@@ -44,6 +45,7 @@ const serveurTest = () => {
 
     depotDonnees = {
       demarreRecuperationDocument: () => Promise.resolve(),
+      statutRecuperationDocument: () => Promise.resolve(DepotDonnees.STATUT_INITIAL),
     };
 
     fabriqueSessionFCPlus = {

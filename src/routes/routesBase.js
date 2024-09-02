@@ -3,6 +3,7 @@ const express = require('express');
 const routesBase = (config) => {
   const {
     adaptateurEnvironnement,
+    depotDonnees,
     middleware,
   } = config;
 
@@ -13,10 +14,12 @@ const routesBase = (config) => {
     (...args) => middleware.renseigneUtilisateurCourant(...args),
     (requete, reponse) => {
       const infosUtilisateur = requete.utilisateurCourant;
-      reponse.render('accueil', {
-        infosUtilisateur,
-        avecOOTS: adaptateurEnvironnement.avecOOTS(),
-      });
+      depotDonnees.statutRecuperationDocument()
+        .then((statut) => reponse.render('accueil', {
+          avecOOTS: adaptateurEnvironnement.avecOOTS(),
+          infosUtilisateur,
+          statut,
+        }));
     },
   );
 
