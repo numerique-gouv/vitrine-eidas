@@ -1,23 +1,19 @@
-const STATUTS = {
-  STATUT_EN_COURS: 'enCours',
-  STATUT_INITIAL: 'initial',
-};
+const StatutRecuperationDocument = require('./modeles/statutRecuperationDocument');
 
 class DepotDonnees {
   constructor(donnees = {}) {
     this.donnees = donnees;
-    this.donnees.statutRecuperationDocument ||= STATUTS.STATUT_INITIAL;
+    this.donnees.statutRecuperationDocument ||= StatutRecuperationDocument.INITIAL;
   }
 
   demarreRecuperationDocument() {
-    this.donnees.statutRecuperationDocument = STATUTS.STATUT_EN_COURS;
+    this.donnees.statutRecuperationDocument = StatutRecuperationDocument.EN_COURS;
     return Promise.resolve();
   }
 
   statutRecuperationDocument() {
-    return Promise.resolve(this.donnees.statutRecuperationDocument);
+    return Promise.resolve(new StatutRecuperationDocument(this.donnees.statutRecuperationDocument));
   }
 }
 
-Object.assign(DepotDonnees, STATUTS);
 module.exports = DepotDonnees;

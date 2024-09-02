@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const serveurTest = require('./serveurTest');
 const { leveErreur } = require('./utils');
-const DepotDonnees = require('../../src/depotDonnees');
+const StatutRecuperationDocument = require('../../src/modeles/statutRecuperationDocument');
 const Utilisateur = require('../../src/modeles/utilisateur');
 
 describe('Le serveur des routes `/`', () => {
@@ -52,12 +52,14 @@ describe('Le serveur des routes `/`', () => {
           .catch(leveErreur);
       });
 
-      it("affiche le statut du processus de récupération de document", () => {
-        serveur.depotDonnees().statutRecuperationDocument = () => Promise.resolve(DepotDonnees.STATUT_EN_COURS);
+      it('affiche le statut du processus de récupération de document', () => {
+        serveur.depotDonnees().statutRecuperationDocument = () => (
+          Promise.resolve(StatutRecuperationDocument.enCours())
+        );
 
         return axios.get(`http://localhost:${port}/`)
           .then((reponse) => {
-            expect(reponse.data).toContain("Document en cours de récupération");
+            expect(reponse.data).toContain('Document en cours de récupération');
           })
           .catch(leveErreur);
       });
