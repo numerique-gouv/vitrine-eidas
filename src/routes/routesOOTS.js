@@ -15,6 +15,15 @@ const routesOOTS = (config) => {
     }
   });
 
+  routes.post('/document', (requete, reponse) => {
+    if (adaptateurEnvironnement.avecOOTS()) {
+      depotDonnees.termineRecuperationDocument()
+        .then(() => reponse.send());
+    } else {
+      reponse.status(501).send('Not Implemented Yet!');
+    }
+  });
+
   return routes;
 };
 

@@ -49,4 +49,29 @@ describe('le serveur des routes `/oots/document`', () => {
         });
     });
   });
+
+  describe('sur POST /oots/document', () => {
+    it('lève une erreur (501) not implemented si la fonctionnalité est désactivée', () => {
+      expect.assertions(2);
+      serveur.adaptateurEnvironnement().avecOOTS = () => false;
+
+      return axios.post(`http://localhost:${port}/oots/document`)
+        .catch(({ response }) => {
+          expect(response.status).toEqual(501);
+          expect(response.data).toEqual('Not Implemented Yet!');
+        });
+    });
+
+    it('met à jour le statut de récupération du document', () => {
+      let depotDonneesAppele = false;
+      serveur.depotDonnees().termineRecuperationDocument = () => {
+        depotDonneesAppele = true;
+        return Promise.resolve();
+      };
+
+      return axios.post(`http://localhost:${port}/oots/document`)
+        .then(() => expect(depotDonneesAppele).toBe(true))
+        .catch(leveErreur);
+    });
+  });
 });

@@ -14,6 +14,11 @@ class DepotDonnees {
   statutRecuperationDocument() {
     return Promise.resolve(new StatutRecuperationDocument(this.donnees.statutRecuperationDocument));
   }
+
+  termineRecuperationDocument() {
+    this.donnees.statutRecuperationDocument = StatutRecuperationDocument.TERMINE;
+    return Promise.resolve();
+  }
 }
 
 module.exports = DepotDonnees;
