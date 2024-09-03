@@ -46,6 +46,7 @@ const serveurTest = () => {
     depotDonnees = {
       demarreRecuperationDocument: () => Promise.resolve(),
       statutRecuperationDocument: () => Promise.resolve(new StatutRecuperationDocument()),
+      termineRecuperationDocument: () => Promise.resolve(),
     };
 
     fabriqueSessionFCPlus = {

@@ -20,6 +20,8 @@ block page
         a(href = '/oots/document') Récupérer un document par OOTS
       if statut.estEnCours()
         p Document en cours de récupération
+      if statut.estTermine()
+        p Document récupéré !
       br
 
     a(href = '/auth/fcplus/destructionSession') Déconnexion

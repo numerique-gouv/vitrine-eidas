@@ -63,6 +63,18 @@ describe('Le serveur des routes `/`', () => {
           })
           .catch(leveErreur);
       });
+
+      it('affiche lorsque le document a été récupéré', () => {
+        serveur.depotDonnees().statutRecuperationDocument = () => (
+          Promise.resolve(StatutRecuperationDocument.termine())
+        );
+
+        return axios.get(`http://localhost:${port}/`)
+          .then((reponse) => {
+            expect(reponse.data).toContain('Document récupéré !');
+          })
+          .catch(leveErreur);
+      });
     });
   });
 });
