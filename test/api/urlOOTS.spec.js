@@ -7,6 +7,7 @@ describe("Le constructeur de l'URL de requête OOTS-France", () => {
   beforeEach(() => {
     adaptateurEnvironnement.avecOOTS = () => true;
     adaptateurEnvironnement.urlBaseOOTSFrance = () => '';
+    adaptateurEnvironnement.identifiantRequeteur = () => '';
     requete.session = {};
   });
 
@@ -22,5 +23,12 @@ describe("Le constructeur de l'URL de requête OOTS-France", () => {
     const url = urlOOTS(adaptateurEnvironnement, requete);
 
     expect(url).toContain('jetonAcces=abcdef');
+  });
+
+  it("contient l'identifiant de requeteur", () => {
+    adaptateurEnvironnement.identifiantRequeteur = () => 'un-identifiant';
+    const url = urlOOTS(adaptateurEnvironnement, requete);
+
+    expect(url).toContain('idRequeteur=un-identifiant');
   });
 });

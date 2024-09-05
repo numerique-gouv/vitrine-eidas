@@ -29,6 +29,7 @@ const serveurTest = () => {
       avecMock: () => true,
       avecOOTS: () => true,
       identifiantClient: () => '',
+      identifiantRequeteur: () => '',
       secretJetonSession: () => 'secret',
       urlBaseOOTSFrance: () => '',
       urlRedirectionConnexion: () => '',
