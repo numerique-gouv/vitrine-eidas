@@ -18,7 +18,7 @@
     "jest": "^29.5.0"
   },
   "dependencies": {
-    "axios": "^1.6.0",
+    "axios": "^1.7.4",
     "cookie-session": "^2.1.0",
     "diary": "^0.4.5",
     "express": "^4.19.2",
