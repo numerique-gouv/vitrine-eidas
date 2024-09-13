@@ -24,4 +24,14 @@ describe('Le dépôt de données', () => {
       .then(() => depot.statutRecuperationDocument())
       .then((statut) => expect(statut.estTermine()).toBe(true));
   });
+
+  it('repasse le statut de récupération de document à « initial »', () => {
+    const depot = new DepotDonnees({
+      statutRecuperationDocument: StatutRecuperationDocument.EN_COURS,
+    });
+
+    return depot.reinitialiseRecuperationDocument()
+      .then(() => depot.statutRecuperationDocument())
+      .then((statut) => expect(statut.estInitial()).toBe(true));
+  });
 });

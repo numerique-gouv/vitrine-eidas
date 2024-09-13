@@ -4,7 +4,13 @@ describe('Le requêteur de destruction de session FC+', () => {
   const adaptateurChiffrement = {};
   const adaptateurEnvironnement = {};
   const adaptateurFranceConnectPlus = {};
-  const config = { adaptateurChiffrement, adaptateurEnvironnement, adaptateurFranceConnectPlus };
+  const depotDonnees = {};
+  const config = {
+    adaptateurChiffrement,
+    adaptateurEnvironnement,
+    adaptateurFranceConnectPlus,
+    depotDonnees,
+  };
   const reponse = {};
 
   let requete = {};
@@ -13,6 +19,7 @@ describe('Le requêteur de destruction de session FC+', () => {
     adaptateurChiffrement.cleHachage = () => '';
     adaptateurEnvironnement.urlRedirectionDeconnexion = () => '';
     adaptateurFranceConnectPlus.urlDestructionSession = () => Promise.resolve('');
+    depotDonnees.reinitialiseRecuperationDocument = () => Promise.resolve();
     requete = { session: {} };
     reponse.end = () => Promise.resolve();
     reponse.redirect = () => Promise.resolve();
@@ -85,6 +92,18 @@ describe('Le requêteur de destruction de session FC+', () => {
       };
 
       return destructionSessionFCPlus(config, requete, reponse);
+    });
+
+    it('réinitialise le statut de récupération du document (pour les besoins de la démo, en attendant gestion spécifique par utilisateur)', () => {
+      let depotDonneesAppele = false;
+
+      depotDonnees.reinitialiseRecuperationDocument = () => {
+        depotDonneesAppele = true;
+        return Promise.resolve();
+      };
+
+      return destructionSessionFCPlus(config, requete, reponse)
+        .then(() => expect(depotDonneesAppele).toBe(true));
     });
   });
 

@@ -3,6 +3,7 @@ const destructionSessionFCPlus = (config, requete, reponse) => {
     adaptateurChiffrement,
     adaptateurEnvironnement,
     adaptateurFranceConnectPlus,
+    depotDonnees,
   } = config;
 
   const { jwtSessionFCPlus } = requete.session;
@@ -11,7 +12,8 @@ const destructionSessionFCPlus = (config, requete, reponse) => {
   const etat = adaptateurChiffrement.cleHachage(`${Math.random()}`);
   const urlRedirectionDeconnexion = adaptateurEnvironnement.urlRedirectionDeconnexion();
 
-  return adaptateurFranceConnectPlus.urlDestructionSession()
+  return depotDonnees.reinitialiseRecuperationDocument()
+    .then(() => adaptateurFranceConnectPlus.urlDestructionSession())
     .then((url) => reponse.redirect(
       `${url}?id_token_hint=${jwtSessionFCPlus}&state=${etat}&post_logout_redirect_uri=${urlRedirectionDeconnexion}`,
     ));

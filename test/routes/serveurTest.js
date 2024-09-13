@@ -46,6 +46,7 @@ const serveurTest = () => {
 
     depotDonnees = {
       demarreRecuperationDocument: () => Promise.resolve(),
+      reinitialiseRecuperationDocument: () => Promise.resolve(),
       statutRecuperationDocument: () => Promise.resolve(new StatutRecuperationDocument()),
       termineRecuperationDocument: () => Promise.resolve(),
     };
