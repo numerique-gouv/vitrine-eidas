@@ -11,6 +11,11 @@ class DepotDonnees {
     return Promise.resolve();
   }
 
+  reinitialiseRecuperationDocument() {
+    this.donnees.statutRecuperationDocument = StatutRecuperationDocument.INITIAL;
+    return Promise.resolve();
+  }
+
   statutRecuperationDocument() {
     return Promise.resolve(new StatutRecuperationDocument(this.donnees.statutRecuperationDocument));
   }

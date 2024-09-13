@@ -37,6 +37,7 @@ const creeServeur = (config) => {
     adaptateurChiffrement,
     adaptateurEnvironnement,
     adaptateurFranceConnectPlus,
+    depotDonnees,
     fabriqueSessionFCPlus,
     journal,
     middleware,
