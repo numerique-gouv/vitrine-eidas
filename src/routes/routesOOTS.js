@@ -24,6 +24,10 @@ const routesOOTS = (config) => {
     }
   });
 
+  routes.get('/callback', (requete, reponse) => {
+    reponse.render('redirectionNavigateur', { destination: '/' });
+  });
+
   return routes;
 };
 
