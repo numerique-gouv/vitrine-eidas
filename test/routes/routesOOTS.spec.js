@@ -74,4 +74,14 @@ describe('le serveur des routes `/oots/document`', () => {
         .catch(leveErreur);
     });
   });
+
+  describe('sur GET /oots/callback', () => {
+    it("redirige vers la page d'accueil", () => (
+      axios.get(`http://localhost:${port}/oots/callback`)
+        .then((reponse) => {
+          expect(reponse.data).toContain('<meta http-equiv="refresh" content="0; url=\'/\'">');
+        })
+        .catch(leveErreur)
+    ));
+  });
 });
