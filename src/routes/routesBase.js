@@ -1,5 +1,7 @@
 const express = require('express');
 
+const documentRecu = require('../api/documentRecu');
+
 const routesBase = (config) => {
   const {
     adaptateurEnvironnement,
@@ -22,6 +24,8 @@ const routesBase = (config) => {
         }));
     },
   );
+
+  routes.get('/documentRecu', (requete, reponse) => documentRecu(depotDonnees, reponse));
 
   return routes;
 };

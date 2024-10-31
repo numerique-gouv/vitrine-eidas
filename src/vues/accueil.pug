@@ -21,7 +21,7 @@ block page
       if statut.estEnCours()
         p Document en cours de récupération
       if statut.estTermine()
-        p Document récupéré !
+        p Document récupéré ! #[a(href = '/documentRecu') (consulter le document)]
       br
 
     a(href = '/auth/fcplus/destructionSession') Déconnexion

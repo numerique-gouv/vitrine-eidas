@@ -25,6 +25,16 @@ describe('Le dépôt de données', () => {
       .then((statut) => expect(statut.estTermine()).toBe(true));
   });
 
+  it('conserve le document reçu', () => {
+    const depot = new DepotDonnees({
+      statutRecuperationDocument: StatutRecuperationDocument.EN_COURS,
+    });
+
+    return depot.termineRecuperationDocument(Buffer.from('Un document'))
+      .then(() => depot.documentRecu())
+      .then((buffer) => expect(buffer.toString()).toBe('Un document'));
+  });
+
   it('repasse le statut de récupération de document à « initial »', () => {
     const depot = new DepotDonnees({
       statutRecuperationDocument: StatutRecuperationDocument.EN_COURS,

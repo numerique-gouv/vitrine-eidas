@@ -1,3 +1,4 @@
+const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const express = require('express');
 
@@ -17,6 +18,8 @@ const creeServeur = (config) => {
   } = config;
   let serveur;
   const app = express();
+
+  app.use(bodyParser.json());
 
   app.set('trust proxy', 1);
 
