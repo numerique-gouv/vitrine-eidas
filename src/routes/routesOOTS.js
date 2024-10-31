@@ -17,7 +17,7 @@ const routesOOTS = (config) => {
 
   routes.post('/document', (requete, reponse) => {
     if (adaptateurEnvironnement.avecOOTS()) {
-      depotDonnees.termineRecuperationDocument()
+      depotDonnees.termineRecuperationDocument(Buffer.from(requete.body.document))
         .then(() => reponse.send());
     } else {
       reponse.status(501).send('Not Implemented Yet!');

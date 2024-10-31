@@ -69,8 +69,19 @@ describe('le serveur des routes `/oots/document`', () => {
         return Promise.resolve();
       };
 
-      return axios.post(`http://localhost:${port}/oots/document`)
+      return axios.post(`http://localhost:${port}/oots/document`, { document: Buffer.from('') })
         .then(() => expect(depotDonneesAppele).toBe(true))
+        .catch(leveErreur);
+    });
+
+    it('conserve le document reçu', () => {
+      expect.assertions(1);
+      serveur.depotDonnees().termineRecuperationDocument = (document) => {
+        expect(document.toString()).toBe('Un document');
+        return Promise.resolve();
+      };
+
+      return axios.post(`http://localhost:${port}/oots/document`, { document: Buffer.from('Un document') })
         .catch(leveErreur);
     });
   });

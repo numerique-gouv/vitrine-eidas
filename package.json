@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "axios": "^1.7.4",
+    "body-parser": "^1.20.3",
     "cookie-session": "^2.1.0",
     "diary": "^0.4.5",
     "express": "^4.21.0",
