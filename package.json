@@ -22,7 +22,7 @@
     "body-parser": "^1.20.3",
     "cookie-session": "^2.1.0",
     "diary": "^0.4.5",
-    "express": "^4.21.0",
+    "express": "^4.21.1",
     "jose": "^5.2.0",
     "nodemon": "^3.0.1",
     "pug": "^3.0.3"
