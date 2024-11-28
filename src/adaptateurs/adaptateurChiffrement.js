@@ -26,8 +26,20 @@ const verifieSignatureJWTDepuisJWKS = (jwt, urlJWKS) => {
   return verifieJeton(jwt, jwks);
 };
 
+const genereJWT = (infos) => {
+  const headerJWT = {
+    alg: 'RS256',
+  };
+
+  return jose.importJWK(adaptateurEnvironnement.clePriveeJWK())
+    .then((clePrivee) => new jose.SignJWT(infos)
+      .setProtectedHeader(headerJWT)
+      .sign(clePrivee));
+};
+
 module.exports = {
   cleHachage,
   dechiffreJWE,
+  genereJWT,
   verifieSignatureJWTDepuisJWKS,
 };

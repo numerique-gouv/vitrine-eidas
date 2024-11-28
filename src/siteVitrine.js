@@ -51,7 +51,7 @@ const creeServeur = (config) => {
   app.use(
     '/oots',
     protegeRouteAvecOOTS(adaptateurEnvironnement),
-    routesOOTS({ adaptateurEnvironnement, depotDonnees }),
+    routesOOTS({ adaptateurChiffrement, adaptateurEnvironnement, depotDonnees }),
   );
 
   app.use('/', routesBase({ adaptateurEnvironnement, depotDonnees, middleware }));
