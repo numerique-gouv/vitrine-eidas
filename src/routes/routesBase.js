@@ -1,5 +1,6 @@
 const express = require('express');
 
+const { protegeRouteAvecOOTS } = require('./utils');
 const documentRecu = require('../api/documentRecu');
 
 const routesBase = (config) => {
@@ -25,7 +26,11 @@ const routesBase = (config) => {
     },
   );
 
-  routes.get('/documentRecu', (requete, reponse) => documentRecu(depotDonnees, reponse));
+  routes.get(
+    '/documentRecu',
+    protegeRouteAvecOOTS(adaptateurEnvironnement),
+    (_requete, reponse) => documentRecu(depotDonnees, reponse),
+  );
 
   return routes;
 };
