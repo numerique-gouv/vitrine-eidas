@@ -77,4 +77,17 @@ describe('Le serveur des routes `/`', () => {
       });
     });
   });
+
+  describe('sur GET /documentRecu', () => {
+    it('retourne une erreur HTTP 501 (Not Implemented) si feature flip désactivé', () => {
+      expect.assertions(2);
+      serveur.adaptateurEnvironnement().avecOOTS = () => false;
+
+      return axios.get(`http://localhost:${port}/documentRecu`)
+        .catch(({ response }) => {
+          expect(response.status).toBe(501);
+          expect(response.data).toBe('Not Implemented Yet!');
+        });
+    });
+  });
 });

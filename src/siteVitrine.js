@@ -5,6 +5,7 @@ const express = require('express');
 const routesAuth = require('./routes/routesAuth');
 const routesBase = require('./routes/routesBase');
 const routesOOTS = require('./routes/routesOOTS');
+const { protegeRouteAvecOOTS } = require('./routes/utils');
 
 const creeServeur = (config) => {
   const {
@@ -47,13 +48,11 @@ const creeServeur = (config) => {
     middleware,
   }));
 
-  const protegeRoute = (_requete, reponse, suite) => (
-    adaptateurEnvironnement.avecOOTS()
-      ? suite()
-      : reponse.status(501).send('Not Implemented Yet!')
+  app.use(
+    '/oots',
+    protegeRouteAvecOOTS(adaptateurEnvironnement),
+    routesOOTS({ adaptateurEnvironnement, depotDonnees }),
   );
-
-  app.use('/oots', protegeRoute, routesOOTS({ adaptateurEnvironnement, depotDonnees }));
 
   app.use('/', routesBase({ adaptateurEnvironnement, depotDonnees, middleware }));
 
