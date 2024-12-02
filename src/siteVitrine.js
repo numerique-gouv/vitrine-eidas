@@ -16,6 +16,7 @@ const creeServeur = (config) => {
     journal,
     middleware,
   } = config;
+
   let serveur;
   const app = express();
 
@@ -46,7 +47,13 @@ const creeServeur = (config) => {
     middleware,
   }));
 
-  app.use('/oots', routesOOTS({ adaptateurEnvironnement, depotDonnees }));
+  const protegeRoute = (_requete, reponse, suite) => (
+    adaptateurEnvironnement.avecOOTS()
+      ? suite()
+      : reponse.status(501).send('Not Implemented Yet!')
+  );
+
+  app.use('/oots', protegeRoute, routesOOTS({ adaptateurEnvironnement, depotDonnees }));
 
   app.use('/', routesBase({ adaptateurEnvironnement, depotDonnees, middleware }));
 
