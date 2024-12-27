@@ -25,8 +25,9 @@ class SessionFCPlus {
     ])
       .then(([jwt, url]) => this.adaptateurChiffrement.verifieSignatureJWTDepuisJWKS(jwt, url))
       .then((infosDechiffrees) => ({
-        prenom: infosDechiffrees.given_name,
+        dateNaissance: infosDechiffrees.birthdate,
         nomUsage: infosDechiffrees.family_name,
+        prenom: infosDechiffrees.given_name,
         nonce: this.nonce,
       }))
       .catch((e) => Promise.reject(new ErreurEchecAuthentification(e.message)));
