@@ -26,7 +26,6 @@ describe('Le serveur des routes `/auth`', () => {
             keys: [{
               kid: 'hash de 503as-2qay5...',
               kty: 'RSA',
-              use: 'enc',
               e: 'AQAB',
               n: '503as-2qay5...',
             }],
