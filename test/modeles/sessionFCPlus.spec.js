@@ -88,7 +88,7 @@ describe('Une session FranceConnect+', () => {
         try {
           expect(jwt).toBe('aaa');
           expect(url).toBe('http://example.com');
-          return Promise.resolve({ given_name: 'Anne', family_name: 'Durand' });
+          return Promise.resolve({ given_name: 'Anne', family_name: 'Durand', birthdate: '1972-11-25' });
         } catch (e) {
           return Promise.reject(e);
         }
@@ -99,6 +99,7 @@ describe('Une session FranceConnect+', () => {
         .then((json) => {
           expect(json).toHaveProperty('prenom', 'Anne');
           expect(json).toHaveProperty('nomUsage', 'Durand');
+          expect(json).toHaveProperty('dateNaissance', '1972-11-25');
         });
     });
 
