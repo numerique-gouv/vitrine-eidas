@@ -25,7 +25,6 @@ const routesAuth = (config) => {
     const clePubliqueDansJWKSet = {
       keys: [{
         kid: idClePublique,
-        use: 'enc',
         kty,
         e,
         n,
