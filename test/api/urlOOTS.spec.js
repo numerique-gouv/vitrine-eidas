@@ -9,7 +9,7 @@ describe("Le constructeur de l'URL de requête OOTS-France", () => {
     adaptateurEnvironnement.avecOOTS = () => true;
     adaptateurEnvironnement.urlBaseOOTSFrance = () => '';
     adaptateurEnvironnement.identifiantRequeteur = () => '';
-    adaptateurChiffrement.genereJWT = () => Promise.resolve();
+    adaptateurChiffrement.enJWEPourOOTS = () => Promise.resolve();
     requete.session = { infosUtilisateur: {} };
   });
 
@@ -31,7 +31,7 @@ describe("Le constructeur de l'URL de requête OOTS-France", () => {
 
   it('contient le jeton utilisateur', () => {
     requete.session.infosUtilisateur = { prenom: 'Pierre', nom: 'Jax' };
-    adaptateurChiffrement.genereJWT = (infosutilisateur) => {
+    adaptateurChiffrement.enJWEPourOOTS = (infosutilisateur) => {
       expect(infosutilisateur).toStrictEqual({ prenom: 'Pierre', nom: 'Jax' });
       return Promise.resolve('unJeton');
     };
