@@ -22,6 +22,8 @@ const urlConfigurationOpenIdFCPlus = () => process.env.URL_CONFIGURATION_OPEN_ID
 
 const urlBaseOOTSFrance = () => process.env.URL_BASE_OOTS_FRANCE;
 
+const urlBaseSiteVitrine = () => process.env.URL_BASE_SITE_VITRINE;
+
 const urlRedirectionConnexion = () => process.env.URL_REDIRECTION_CONNEXION;
 
 const urlRedirectionDeconnexion = () => process.env.URL_REDIRECTION_DECONNEXION;
@@ -37,6 +39,7 @@ module.exports = {
   secretJetonSession,
   urlConfigurationOpenIdFCPlus,
   urlBaseOOTSFrance,
+  urlBaseSiteVitrine,
   urlRedirectionConnexion,
   urlRedirectionDeconnexion,
 };

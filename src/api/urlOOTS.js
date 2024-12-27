@@ -2,11 +2,11 @@ const urlOOTS = (config, requete) => {
   const { adaptateurChiffrement, adaptateurEnvironnement } = config;
   const { infosUtilisateur } = requete.session;
 
-  return adaptateurChiffrement.genereJWT(infosUtilisateur)
-    .then((jeton) => {
+  return adaptateurChiffrement.enJWEPourOOTS(infosUtilisateur)
+    .then((jwe) => {
       const requeteur = adaptateurEnvironnement.identifiantRequeteur();
       const urlOOTSFrance = adaptateurEnvironnement.urlBaseOOTSFrance();
-      return `${urlOOTSFrance}/requete/pieceJustificative?codeDemarche=00&codePays=FR&idRequeteur=${requeteur}&utilisateur=${jeton}`;
+      return `${urlOOTSFrance}/requete/pieceJustificative?codeDemarche=00&codePays=FR&idRequeteur=${requeteur}&utilisateur=${jwe}`;
     });
 };
 
