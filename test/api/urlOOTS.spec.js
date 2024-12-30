@@ -39,6 +39,6 @@ describe("Le constructeur de l'URL de requête OOTS-France", () => {
     urlOOTS(
       { adaptateurChiffrement, adaptateurEnvironnement },
       requete,
-    ).then((url) => expect(url).toContain('unJeton'));
+    ).then((url) => expect(url).toContain('utilisateur=unJeton'));
   });
 });
