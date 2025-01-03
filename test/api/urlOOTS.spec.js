@@ -15,7 +15,7 @@ describe("Le constructeur de l'URL de requête OOTS-France", () => {
 
   it('retourne un lien vers OOTS', () => {
     adaptateurEnvironnement.urlBaseOOTSFrance = () => 'http://example.com';
-    urlOOTS(
+    return urlOOTS(
       { adaptateurChiffrement, adaptateurEnvironnement },
       requete,
     ).then((url) => expect(url).toMatch(/^http:\/\/example\.com.*/));
@@ -23,7 +23,7 @@ describe("Le constructeur de l'URL de requête OOTS-France", () => {
 
   it("contient l'identifiant de requeteur", () => {
     adaptateurEnvironnement.identifiantRequeteur = () => 'un-identifiant';
-    urlOOTS(
+    return urlOOTS(
       { adaptateurChiffrement, adaptateurEnvironnement },
       requete,
     ).then((url) => expect(url).toContain('idRequeteur=un-identifiant'));
@@ -36,7 +36,7 @@ describe("Le constructeur de l'URL de requête OOTS-France", () => {
       return Promise.resolve('unJeton');
     };
 
-    urlOOTS(
+    return urlOOTS(
       { adaptateurChiffrement, adaptateurEnvironnement },
       requete,
     ).then((url) => {
